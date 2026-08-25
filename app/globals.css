@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Share+Tech+Mono&display=swap');
 
 @import "tailwindcss";
 
@@ -7,15 +7,15 @@
   --font-display: 'Outfit', sans-serif;
   --font-mono: 'Share Tech Mono', monospace;
   
-  --color-accent: hsl(35, 100%, 55%);
-  --color-accent-hover: hsl(35, 100%, 62%);
-  --color-accent-glow: hsla(35, 100%, 55%, 0.4);
+  --color-accent: hsl(38, 100%, 55%);
+  --color-accent-hover: hsl(38, 100%, 65%);
+  --color-accent-glow: hsla(38, 100%, 55%, 0.4);
 }
 
 :root {
-  --background: #050505;
+  --background: #060709;
   --foreground: #f3f4f6;
-  --accent-color: hsl(35, 100%, 55%);
+  --accent-color: hsl(38, 100%, 55%);
 }
 
 body {
@@ -25,22 +25,20 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Custom Utilities and Animations */
+/* Background Image styling using playlist.png */
 .hero-bg {
-  background-image: url('/bg-hero.png');
+  background-image: url('/playlist.png');
   background-size: cover;
-  background-position: center;
+  background-position: center center;
   background-repeat: no-repeat;
 }
 
 @media (orientation: portrait) {
   .hero-bg {
-    background-image: url('/bg-hero.png');
-    background-position: center top;
+    background-image: url('/playlist.png');
+    background-position: center center;
   }
 }
-
-
 
 .grain-overlay {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
@@ -56,7 +54,7 @@ body {
 }
 
 .animate-spin-vinyl {
-  animation: spin-vinyl 8s linear infinite;
+  animation: spin-vinyl 9s linear infinite;
 }
 
 @keyframes colon-blink {
@@ -68,7 +66,7 @@ body {
   animation: colon-blink 1s step-start infinite;
 }
 
-/* Custom Scrollbar for modern touch */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -77,11 +75,11 @@ body {
   background: rgba(255, 255, 255, 0.03);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.3);
 }
 
 /* Glass panel glow animation */
@@ -93,22 +91,21 @@ body {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: 0 0 40px -10px var(--accent-color);
+  box-shadow: 0 0 50px -10px var(--accent-color);
   opacity: 0;
   transition: opacity 0.6s ease;
   z-index: -1;
   pointer-events: none;
 }
 .glass-glow.playing::after {
-  opacity: 0.15;
+  opacity: 0.22;
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
+/* Hide scrollbar for clean UI */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
-/* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

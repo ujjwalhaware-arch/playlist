@@ -4,12 +4,12 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Punjabi Pop Nostalgia — Radio & Music Archive",
-  description: "A gorgeous, interactive single-page music player archiving the classic golden era of Punjabi Pop and modern hits.",
-  keywords: ["Punjabi Pop", "Nostalgia Music", "Sidhu Moose Wala", "Diljit Dosanjh", "Yo Yo Honey Singh", "Karan Aujla", "Shubh", "AP Dhillon", "Punjabi Songs", "Retro Radio"],
+  title: "My Playlist — Mood Radio & Nostalgia Vault",
+  description: "A gorgeous, interactive glassmorphism music player with mood-curated playlists: Karwaan, Rockstar, Metro vibes, Sufi classics, Romance, Indie, and Pop hits.",
+  keywords: ["Music Player", "Karwaan", "Rockstar", "Aashiqui 2", "Life in a Metro", "Indie Music", "Sufi Songs", "Mood Radio", "Prateek Kuhad", "Arijit Singh", "Mohit Chauhan", "KK"],
   openGraph: {
-    title: "Punjabi Pop Nostalgia — Radio & Music Archive",
-    description: "Stream the greatest Punjabi pop nostalgic tracks on a glass-morphic music player.",
+    title: "My Playlist — Mood Radio & Nostalgia Vault",
+    description: "Stream handpicked tracks organized by mood on a sleek glassmorphic music player.",
     type: "website",
     locale: "en_IN",
   },
