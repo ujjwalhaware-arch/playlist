@@ -204,7 +204,9 @@ export const INDIE_ACOUSTIC_TRACKS: Track[] = [
   { id: 619, title: "I Thought I Saw Your Face Today", artist: "She & Him", year: 2008, duration: "2:50", videoId: "pyGU-UudvrM", mood: "Indie Chill" },
   { id: 620, title: "I'll Miss You", artist: "Kushal Chokshi", film: "Secret Superstar", year: 2017, duration: "5:08", videoId: "JXaE6cPaJYo", mood: "Indie Chill" },
   { id: 621, title: "Stay With Me", artist: "Sam Smith", year: 2014, duration: "2:52", videoId: "pB-5XG-DbAA", mood: "Indie Chill" },
-  { id: 622, title: "Bairan", artist: "Banjaare ft. Simiran Kaur Dhadli", year: 2023, duration: "3:30", videoId: "n0kh1gSdPFc", mood: "Indie Chill" }
+  { id: 622, title: "Bairan", artist: "Banjaare ft. Simiran Kaur Dhadli", year: 2023, duration: "3:30", videoId: "n0kh1gSdPFc", mood: "Indie Chill" },
+  { id: 623, title: "Let Down", artist: "Radiohead", year: 1997, duration: "4:59", videoId: "-Nrb5ffQckM", fallbackVideoIds: ["ZVgHPSyEIqk"], mood: "Indie Chill" },
+  { id: 624, title: "Let Down (Slowed + Reverb)", artist: "Radiohead", year: 1997, duration: "5:45", videoId: "-RFdnFV6MAI", fallbackVideoIds: ["q14ggvfIzec", "-Nrb5ffQckM"], mood: "Indie Chill" }
 ];
 
 // ----------------------------------------------------
@@ -339,9 +341,9 @@ export const PLAYLISTS: Playlist[] = [
   {
     id: "indie",
     name: "Indie Chill & Serenity",
-    tagline: "CO2, End of Beginning & Acoustic",
+    tagline: "Let Down, CO2, End of Beginning & Acoustic",
     icon: "☕",
-    description: "CO2, Line Without a Hook, End of Beginning, Haseen, Kasoor, Sang Rahiyo, Piya by Khwaab & acoustic gems.",
+    description: "Let Down (Original & Slowed), CO2, Line Without a Hook, End of Beginning, Kasoor, Sang Rahiyo & indie chill gems.",
     tracks: INDIE_ACOUSTIC_TRACKS
   },
   {

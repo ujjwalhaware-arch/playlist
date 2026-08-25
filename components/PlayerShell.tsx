@@ -122,10 +122,12 @@ const MoodSelector = ({
   playlists,
   currentPlaylistIndex,
   onSelectPlaylist,
+  onShuffleAll,
 }: {
   playlists: Playlist[];
   currentPlaylistIndex: number;
   onSelectPlaylist: (index: number) => void;
+  onShuffleAll?: () => void;
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const activeBtnRef = useRef<HTMLButtonElement>(null);
@@ -212,13 +214,27 @@ const MoodSelector = ({
   return (
     <div className="w-full flex flex-col gap-1.5 select-none">
       <div className="flex items-center justify-between px-1">
-        <span className="text-[11px] font-bold uppercase tracking-wider text-white/60 font-mono flex items-center gap-1.5">
-          <svg className="w-3.5 h-3.5 text-accent" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
-          </svg>
-          Select Mood
-        </span>
-        <span className="text-[10px] text-white/45 font-mono truncate max-w-[200px] sm:max-w-none">
+        <div className="flex items-center gap-2">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-white/60 font-mono flex items-center gap-1.5">
+            <svg className="w-3.5 h-3.5 text-accent" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+            </svg>
+            Select Mood
+          </span>
+          {onShuffleAll && (
+            <button
+              onClick={onShuffleAll}
+              className="text-[10.5px] px-2.5 py-0.5 rounded-full bg-accent/20 hover:bg-accent hover:text-black border border-accent/40 text-accent font-semibold transition-all duration-200 flex items-center gap-1 cursor-pointer active:scale-95 shadow-[0_0_10px_rgba(245,158,11,0.2)]"
+              title="Shuffle all songs across entire vault"
+            >
+              <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
+                <path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" />
+              </svg>
+              <span>Shuffle All</span>
+            </button>
+          )}
+        </div>
+        <span className="text-[10px] text-white/45 font-mono truncate max-w-[160px] sm:max-w-none">
           {playlists[currentPlaylistIndex].tagline}
         </span>
       </div>
@@ -376,15 +392,20 @@ const Transport = ({
       {/* Shuffle Button */}
       <button
         onClick={onToggleShuffle}
-        className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer ${
-          isShuffle ? "text-accent bg-accent/20" : "text-white/50 hover:text-white hover:bg-white/10"
+        className={`relative w-8.5 h-8.5 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer ${
+          isShuffle
+            ? "text-accent bg-accent/20 border border-accent/40 shadow-[0_0_12px_rgba(245,158,11,0.3)] scale-105"
+            : "text-white/50 hover:text-white hover:bg-white/10 border border-transparent"
         }`}
-        title={isShuffle ? "Shuffle On" : "Shuffle Off"}
+        title={isShuffle ? "Shuffle Mode: ON (Randomizing tracks)" : "Shuffle Mode: OFF (Sequential playback)"}
         aria-label="Shuffle"
       >
         <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
           <path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" />
         </svg>
+        {isShuffle && (
+          <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+        )}
       </button>
 
       {/* Prev */}
@@ -451,6 +472,7 @@ interface TrackDrawerProps {
   currentTrack: Track;
   isPlaying: boolean;
   onSelectTrack: (track: Track) => void;
+  onShufflePlay: (tracks: Track[]) => void;
 }
 
 const TrackDrawer = ({
@@ -460,6 +482,7 @@ const TrackDrawer = ({
   currentTrack,
   isPlaying,
   onSelectTrack,
+  onShufflePlay,
 }: TrackDrawerProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [viewScope, setViewScope] = useState<"current" | "all">("current");
@@ -511,27 +534,43 @@ const TrackDrawer = ({
             </button>
           </div>
 
-          {/* Scope Toggle & Search */}
-          <div className="flex items-center gap-2">
+          {/* Scope Toggle, Shuffle Action & Search */}
+          <div className="flex items-center justify-between gap-2 flex-wrap sm:flex-nowrap">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setViewScope("current")}
+                className={`text-xs px-3 py-1 rounded-full font-medium transition-all cursor-pointer ${
+                  viewScope === "current" && !searchQuery
+                    ? "bg-accent text-black font-semibold shadow-[0_0_12px_rgba(245,158,11,0.3)]"
+                    : "bg-white/10 text-white/70 hover:text-white"
+                }`}
+              >
+                This Mood ({playlist.tracks.length})
+              </button>
+              <button
+                onClick={() => setViewScope("all")}
+                className={`text-xs px-3 py-1 rounded-full font-medium transition-all cursor-pointer ${
+                  viewScope === "all" || searchQuery
+                    ? "bg-accent text-black font-semibold shadow-[0_0_12px_rgba(245,158,11,0.3)]"
+                    : "bg-white/10 text-white/70 hover:text-white"
+                }`}
+              >
+                All Vault ({ALL_VAULT_TRACKS.length})
+              </button>
+            </div>
+
             <button
-              onClick={() => setViewScope("current")}
-              className={`text-xs px-3 py-1 rounded-full font-medium transition-all ${
-                viewScope === "current" && !searchQuery
-                  ? "bg-accent text-black font-semibold"
-                  : "bg-white/10 text-white/70 hover:text-white"
-              }`}
+              onClick={() => {
+                onShufflePlay(filteredTracks);
+                onClose();
+              }}
+              className="text-xs px-3.5 py-1.5 rounded-full font-bold bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-300 hover:to-amber-500 text-black shadow-[0_0_16px_rgba(245,158,11,0.45)] flex items-center gap-1.5 transition-all duration-200 cursor-pointer active:scale-95 shrink-0 ml-auto sm:ml-0"
+              title="Shuffle and play currently visible songs"
             >
-              This Mood ({playlist.tracks.length})
-            </button>
-            <button
-              onClick={() => setViewScope("all")}
-              className={`text-xs px-3 py-1 rounded-full font-medium transition-all ${
-                viewScope === "all" || searchQuery
-                  ? "bg-accent text-black font-semibold"
-                  : "bg-white/10 text-white/70 hover:text-white"
-              }`}
-            >
-              All Vault ({ALL_VAULT_TRACKS.length})
+              <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                <path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" />
+              </svg>
+              <span>Shuffle Play ({filteredTracks.length})</span>
             </button>
           </div>
 
@@ -629,10 +668,11 @@ export default function PlayerShell() {
   const [elapsed, setElapsed] = useState(0);
   const [duration, setDuration] = useState(0);
   const [playerReady, setPlayerReady] = useState(false);
-  const [isShuffle, setIsShuffle] = useState(false);
+  const [isShuffle, setIsShuffle] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const playerRef = useRef<any>(null);
+  const playHistoryRef = useRef<number[]>([]);
 
   // Active playlist and track
   const currentPlaylist = PLAYLISTS[currentPlaylistIndex] || PLAYLISTS[0];
@@ -640,7 +680,23 @@ export default function PlayerShell() {
 
   useEffect(() => {
     setMounted(true);
+    try {
+      const savedShuffle = localStorage.getItem("vault_shuffle");
+      const shouldShuffle = savedShuffle === null || savedShuffle === "true";
+      setIsShuffle(shouldShuffle);
+      if (shouldShuffle) {
+        const initialRandomIndex = Math.floor(Math.random() * PLAYLISTS[0].tracks.length);
+        setCurrentTrackIndex(initialRandomIndex);
+      }
+    } catch (e) {}
   }, []);
+
+  // Track history for shuffle prev support
+  useEffect(() => {
+    if (currentTrack) {
+      playHistoryRef.current = [...playHistoryRef.current.slice(-30), currentTrack.id];
+    }
+  }, [currentTrack?.id]);
 
   // Handler state refs
   const nextTrackRef = useRef<() => void>(() => {});
@@ -659,7 +715,8 @@ export default function PlayerShell() {
 
   const handleNext = () => {
     const len = currentPlaylist.tracks.length;
-    if (isShuffleRef.current && len > 1) {
+    if (len <= 1) return;
+    if (isShuffleRef.current) {
       let nextIdx = Math.floor(Math.random() * len);
       if (nextIdx === currentTrackIndex) {
         nextIdx = (nextIdx + 1) % len;
@@ -673,13 +730,29 @@ export default function PlayerShell() {
 
   const handlePrev = () => {
     const len = currentPlaylist.tracks.length;
+    if (len <= 1) return;
+    if (isShuffleRef.current && playHistoryRef.current.length > 1) {
+      // Pop current
+      playHistoryRef.current.pop();
+      const prevTrackId = playHistoryRef.current.pop();
+      if (prevTrackId !== undefined) {
+        const prevIdx = currentPlaylist.tracks.findIndex((t) => t.id === prevTrackId);
+        if (prevIdx !== -1) {
+          setCurrentTrackIndex(prevIdx);
+          setElapsed(0);
+          return;
+        }
+      }
+    }
     setCurrentTrackIndex((prev) => (prev - 1 + len) % len);
     setElapsed(0);
   };
 
+  const togglePlayRef = useRef<() => void>(() => {});
+
   const handleTogglePlay = () => {
     if (!playerRef.current || !playerReady) return;
-    if (isPlaying) {
+    if (isPlayingRef.current) {
       try {
         playerRef.current.pauseVideo();
       } catch (e) {}
@@ -692,6 +765,52 @@ export default function PlayerShell() {
       } catch (e) {}
       setIsPlaying(true);
     }
+  };
+
+  togglePlayRef.current = handleTogglePlay;
+
+  // Spacebar Play/Pause Keyboard Shortcut
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if typing in a search bar, input or textarea
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+
+      if (e.code === "Space" || e.key === " ") {
+        e.preventDefault();
+        togglePlayRef.current();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const handleToggleShuffle = () => {
+    setIsShuffle((prev) => {
+      const nextVal = !prev;
+      try {
+        localStorage.setItem("vault_shuffle", String(nextVal));
+      } catch (e) {}
+      return nextVal;
+    });
+  };
+
+  const handleShuffleAll = (customTracks?: Track[]) => {
+    const pool = customTracks && customTracks.length > 0 ? customTracks : ALL_VAULT_TRACKS;
+    const randomTrack = pool[Math.floor(Math.random() * pool.length)];
+    setIsShuffle(true);
+    try {
+      localStorage.setItem("vault_shuffle", "true");
+    } catch (e) {}
+    handleSelectSpecificTrack(randomTrack);
   };
 
   nextTrackRef.current = handleNext;
@@ -915,7 +1034,13 @@ export default function PlayerShell() {
 
   const handleSelectPlaylist = (idx: number) => {
     setCurrentPlaylistIndex(idx);
-    setCurrentTrackIndex(0);
+    const targetPl = PLAYLISTS[idx] || PLAYLISTS[0];
+    if (isShuffleRef.current && targetPl.tracks.length > 1) {
+      const randomIdx = Math.floor(Math.random() * targetPl.tracks.length);
+      setCurrentTrackIndex(randomIdx);
+    } else {
+      setCurrentTrackIndex(0);
+    }
     setElapsed(0);
     setDuration(0);
     setIsPlaying(true);
@@ -978,6 +1103,7 @@ export default function PlayerShell() {
           playlists={PLAYLISTS}
           currentPlaylistIndex={currentPlaylistIndex}
           onSelectPlaylist={handleSelectPlaylist}
+          onShuffleAll={() => handleShuffleAll(ALL_VAULT_TRACKS)}
         />
 
         {/* Responsive Glass Player */}
@@ -1019,7 +1145,7 @@ export default function PlayerShell() {
                 onNext={handleNext}
                 onOpenDrawer={() => setIsDrawerOpen(true)}
                 isShuffle={isShuffle}
-                onToggleShuffle={() => setIsShuffle((prev) => !prev)}
+                onToggleShuffle={handleToggleShuffle}
               />
             </div>
 
@@ -1035,6 +1161,7 @@ export default function PlayerShell() {
         currentTrack={currentTrack}
         isPlaying={isPlaying}
         onSelectTrack={handleSelectSpecificTrack}
+        onShufflePlay={handleShuffleAll}
       />
     </>
   );
