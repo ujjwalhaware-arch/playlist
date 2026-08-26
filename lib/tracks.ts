@@ -263,7 +263,8 @@ export const POP_GROOVES_TRACKS: Track[] = [
   { id: 824, title: "Tu Hi Tu", artist: "Salman Khan / Mohd Irfan", film: "Kick", year: 2014, duration: "5:30", videoId: "tmFbdMuoL2c", mood: "Pop & Vibes" },
   { id: 825, title: "Uff Teri Adaa", artist: "Shankar Mahadevan, Alyssa", film: "Karthik Calling Karthik", year: 2010, duration: "5:04", videoId: "qTsAdjULqwg", mood: "Pop & Vibes" },
   { id: 826, title: "Jiya Lage Na", artist: "Sona Mohapatra", film: "Talaash", year: 2012, duration: "4:36", videoId: "3quthi1mGvI", mood: "Pop & Vibes" },
-  { id: 827, title: "Boyfriend", artist: "Karan Aujla, Ikky, Sunanda Sharma", year: 2025, duration: "2:42", videoId: "5GCfYLguTIs", fallbackVideoIds: ["RYXUA32Dx4k", "zEIYKXitZPg"], mood: "Pop & Vibes" }
+  { id: 827, title: "Boyfriend", artist: "Karan Aujla, Ikky, Sunanda Sharma", year: 2025, duration: "2:42", videoId: "5GCfYLguTIs", fallbackVideoIds: ["RYXUA32Dx4k", "zEIYKXitZPg"], mood: "Pop & Vibes" },
+  { id: 828, title: "Stay With Me (Club Mix)", artist: "Miki Matsubara", year: 1979, duration: "5:12", videoId: "QNYT9wVwQ8A", fallbackVideoIds: ["nuU2YHtxMik"], mood: "Pop & Vibes" }
 ];
 
 // ----------------------------------------------------
