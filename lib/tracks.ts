@@ -127,7 +127,7 @@ export const SUFI_SOUL_TRACKS: Track[] = [
   { id: 417, title: "Raanjhanaa", artist: "Jaswinder Singh, Shiraz Uppal", film: "Raanjhanaa", year: 2013, duration: "5:30", videoId: "vgm1u2gPxzw", mood: "Sufi & Soul" },
   { id: 418, title: "Ye Tune Kya Kiya", artist: "Javed Bashir", film: "OUATIMD", year: 2013, duration: "5:14", videoId: "4yZ-mn0u8NE", mood: "Sufi & Soul" },
   { id: 419, title: "Do Din Ki Zindagi", artist: "Talat Mahmood / Kabir Bhajan", year: 1954, duration: "3:24", videoId: "kIz-mbakcDI", mood: "Sufi & Soul" },
-  { id: 420, title: "Valhav Re Nakhawa", artist: "Hemant Kumar", film: "Marathi Classic", year: 1958, duration: "3:22", videoId: "lfX9GBrGdak", fallbackVideoIds: ["vo2YYIfn_wQ", "fNnnHDBLU6U"], mood: "Sufi & Soul" }
+  { id: 420, title: "Valhav Re Nakhawa (Mi Dolkar)", artist: "Lata Mangeshkar, Hemant Kumar", film: "Marathi Classic", year: 1958, duration: "3:30", videoId: "fNnnHDBLU6U", fallbackVideoIds: ["lfX9GBrGdak", "vo2YYIfn_wQ"], mood: "Sufi & Soul" }
 ];
 
 // ----------------------------------------------------
@@ -312,7 +312,8 @@ export const POP_GROOVES_TRACKS: Track[] = [
   { id: 829, title: "Peecha Chhute", artist: "Mohit Chauhan", film: "Ramaiya Vastavaiya", year: 2013, duration: "3:36", videoId: "m8-IaThi6JA", fallbackVideoIds: ["Phl0srBN37E", "3-VLKuWhQgY"], mood: "Pop & Vibes" },
   { id: 830, title: "Saadi Gali Aaja", artist: "Ayushmann Khurrana, Neeti Mohan", film: "Nautanki Saala!", year: 2013, duration: "4:15", videoId: "cU3IO6Am65o", fallbackVideoIds: ["kut3TKQFO0w", "EWTMszisKyU"], mood: "Pop & Vibes" },
   { id: 831, title: "Chaand Taare", artist: "Abhijeet", film: "Yes Boss", year: 1997, duration: "4:48", videoId: "p2pHdf9_zc8", fallbackVideoIds: ["wO1L7DnPft8", "N3QzaUwml5w"], mood: "Pop & Vibes" },
-  { id: 832, title: "Jaata Hai Tu Kahan", artist: "Abhijeet", film: "Yes Boss", year: 1997, duration: "4:38", videoId: "5eBdiIBvcF8", fallbackVideoIds: ["QBXZDYihmx4", "FP1WJ1_BnDc"], mood: "Pop & Vibes" }
+  { id: 832, title: "Jaata Hai Tu Kahan", artist: "Abhijeet", film: "Yes Boss", year: 1997, duration: "4:38", videoId: "5eBdiIBvcF8", fallbackVideoIds: ["QBXZDYihmx4", "FP1WJ1_BnDc"], mood: "Pop & Vibes" },
+  { id: 833, title: "Wellerman (Sea Shanty)", artist: "Nathan Evans", year: 2021, duration: "2:35", videoId: "qP-7GNoDJ5c", fallbackVideoIds: ["M26V1IWAP-E", "nk8nS8s6a9g", "SLiTW0EC0yo"], mood: "Pop & Vibes" }
 ];
 
 // ----------------------------------------------------
@@ -400,7 +401,7 @@ export const PLAYLISTS: Playlist[] = [
     name: "Pop Grooves & Punjabi Hits",
     tagline: "Softly, Saadi Gali Aaja, Chaand Taare & Vibes",
     icon: "⚡",
-    description: "Softly, Saadi Gali Aaja, Peecha Chhute, Chaand Taare, Cupid, Die With A Smile, Levitating, Shararat & pop energy.",
+    description: "Softly, Saadi Gali Aaja, Wellerman, Peecha Chhute, Chaand Taare, Cupid, Die With A Smile, Levitating & pop energy.",
     tracks: POP_GROOVES_TRACKS
   }
 ];
