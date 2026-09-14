@@ -316,54 +316,6 @@ export const POP_GROOVES_TRACKS: Track[] = [
 ];
 
 // ----------------------------------------------------
-// 9. DEDICATED ALBUM / REGIONAL COLLECTIONS
-// ----------------------------------------------------
-
-export const MARATHI_GEMS_TRACKS: Track[] = [
-  { id: 626, title: "Kase Sartil Saaye", artist: "Saleel Kulkarni, Sandeep Khare", film: "Ayushyawar Bolu Kahi", year: 2003, duration: "5:15", videoId: "NeFiE-OI-kg", fallbackVideoIds: ["tTcYybPzwWc", "BheQDNoe4gw"], mood: "Indie Chill" },
-  { id: 420, title: "Valhav Re Nakhawa", artist: "Hemant Kumar", film: "Marathi Classic", year: 1958, duration: "3:22", videoId: "lfX9GBrGdak", fallbackVideoIds: ["vo2YYIfn_wQ", "fNnnHDBLU6U"], mood: "Sufi & Soul" },
-  { id: 627, title: "Man Talyat Malyat", artist: "Saleel Kulkarni, Sandeep Khare", film: "Sang Sang Bhole Nath", year: 2003, duration: "4:45", videoId: "bshSJf1BHlY", fallbackVideoIds: ["yJ4X6nz2vMQ", "Q8knkYb5lZA"], mood: "Indie Chill" },
-  { id: 565, title: "Ved Lagle Premache", artist: "Swapnil Bandodkar", film: "Duniyadari", year: 2013, duration: "4:10", videoId: "nXJlF-8ds1E", fallbackVideoIds: ["PdR2og6V3DM", "VKpsJJ9rC3I"], mood: "Romance" },
-  { id: 566, title: "Kitida Navyane", artist: "Aarya Ambekar, Mandar Apte", film: "Ti Saddhya Kay Karte", year: 2017, duration: "3:45", videoId: "67-z9COlhVc", fallbackVideoIds: ["xdN2gYjcWuM", "g2hGVqkgJyA"], mood: "Romance" }
-];
-
-export const RAMAIYA_VASTAVAIYA_TRACKS: Track[] = [
-  { id: 509, title: "Jeene Laga Hoon", artist: "Atif Aslam, Shreya Ghoshal", film: "Ramaiya Vastavaiya", year: 2013, duration: "3:57", videoId: "pkzOBl1p7y4", fallbackVideoIds: ["aoJxD8xn3CY", "VhRwuWp4MQ8"], mood: "Romance" },
-  { id: 510, title: "Rang Jo Lagyo", artist: "Atif Aslam, Shreya Ghoshal", film: "Ramaiya Vastavaiya", year: 2013, duration: "4:58", videoId: "LlI1IkgP6BQ", fallbackVideoIds: ["2vmMcIRNGLI", "u9urCRum8_I"], mood: "Romance" },
-  { id: 552, title: "Bairiyaa", artist: "Atif Aslam, Shreya Ghoshal", film: "Ramaiya Vastavaiya", year: 2013, duration: "4:08", videoId: "CW3QJkF_w-U", fallbackVideoIds: ["vfndCiKYO40", "47h-b9v-3go"], mood: "Romance" },
-  { id: 829, title: "Peecha Chhute", artist: "Mohit Chauhan", film: "Ramaiya Vastavaiya", year: 2013, duration: "3:36", videoId: "m8-IaThi6JA", fallbackVideoIds: ["Phl0srBN37E", "3-VLKuWhQgY"], mood: "Pop & Vibes" },
-  { id: 717, title: "Hip Hop Pammi", artist: "Mika Singh, Monali Thakur", film: "Ramaiya Vastavaiya", year: 2013, duration: "3:43", videoId: "QDRrxIcmL9M", fallbackVideoIds: ["btt5XcHQxHo", "Zv4rb8sNICA"], mood: "Desi Dance" },
-  { id: 718, title: "Jadu Ki Jhappi", artist: "Neha Kakkar, Mika Singh", film: "Ramaiya Vastavaiya", year: 2013, duration: "3:38", videoId: "sE1sCU0E2Cc", fallbackVideoIds: ["-0oaLjpZFp8", "bm_RkWt2uHk"], mood: "Desi Dance" }
-];
-
-export const YES_BOSS_TRACKS: Track[] = [
-  { id: 561, title: "Main Koi Aisa Geet Gaoon", artist: "Abhijeet, Alka Yagnik", film: "Yes Boss", year: 1997, duration: "5:42", videoId: "vzlXfZlH5dk", fallbackVideoIds: ["76KtfFpogbw", "GAgdtaZjkNI"], mood: "Romance" },
-  { id: 831, title: "Chaand Taare", artist: "Abhijeet", film: "Yes Boss", year: 1997, duration: "4:48", videoId: "p2pHdf9_zc8", fallbackVideoIds: ["wO1L7DnPft8", "N3QzaUwml5w"], mood: "Pop & Vibes" },
-  { id: 563, title: "Suniye To", artist: "Abhijeet", film: "Yes Boss", year: 1997, duration: "5:10", videoId: "dIk2hz7vm3A", fallbackVideoIds: ["RLFfZJV_gZU", "vZw7c_kblVA"], mood: "Romance" },
-  { id: 832, title: "Jaata Hai Tu Kahan", artist: "Abhijeet", film: "Yes Boss", year: 1997, duration: "4:38", videoId: "5eBdiIBvcF8", fallbackVideoIds: ["QBXZDYihmx4", "FP1WJ1_BnDc"], mood: "Pop & Vibes" },
-  { id: 562, title: "Ek Din Aap", artist: "Kumar Sanu, Alka Yagnik", film: "Yes Boss", year: 1997, duration: "4:25", videoId: "90Q5bMN6u2w", fallbackVideoIds: ["-yvwawJ9u_M", "HHgVlMrkloQ"], mood: "Romance" },
-  { id: 564, title: "Choodi Baji Hai", artist: "Udit Narayan, Alka Yagnik", film: "Yes Boss", year: 1997, duration: "5:05", videoId: "qL3lApIbHV0", fallbackVideoIds: ["tqXLGtj_Iwo", "toBOKtBMwiY"], mood: "Romance" }
-];
-
-export const HASEE_TOH_PHASEE_TRACKS: Track[] = [
-  { id: 531, title: "Zehnaseeb", artist: "Chinmayi Sripaada, Shekhar Ravjiani", film: "Hasee Toh Phasee", year: 2014, duration: "3:37", videoId: "WnU0lH6C0EA", mood: "Romance" },
-  { id: 532, title: "Manchala", artist: "Shafqat Amanat Ali, Nupur Pant", film: "Hasee Toh Phasee", year: 2014, duration: "3:48", videoId: "Xl7iWxPvpA4", mood: "Romance" },
-  { id: 560, title: "Ishq Bulaava", artist: "Sanam Puri, Shipra Goyal", film: "Hasee Toh Phasee", year: 2014, duration: "5:03", videoId: "c2gSzYLJ8sY", fallbackVideoIds: ["Oo5tqEWm-jM", "ZCRL8V0ZkEA"], mood: "Romance" },
-  { id: 720, title: "Drama Queen", artist: "Shreya Ghoshal, Vishal Dadlani", film: "Hasee Toh Phasee", year: 2014, duration: "3:20", videoId: "0Qs-Suk42dY", fallbackVideoIds: ["bMIC6PA9iUE", "6kO3-K3PDU4"], mood: "Desi Dance" },
-  { id: 721, title: "Punjabi Wedding Song", artist: "Sunidhi Chauhan, Benny Dayal", film: "Hasee Toh Phasee", year: 2014, duration: "3:53", videoId: "NuTx6Q4151s", fallbackVideoIds: ["1cTarhdZFW4", "YhSqbQh31po"], mood: "Desi Dance" },
-  { id: 722, title: "Shake It Like Shammi", artist: "Benny Dayal", film: "Hasee Toh Phasee", year: 2014, duration: "3:25", videoId: "mkPZfrePAxo", fallbackVideoIds: ["h6a5QVNMi24", "JOQTyJBP0T4"], mood: "Desi Dance" }
-];
-
-export const MERI_PYAARI_BINDU_TRACKS: Track[] = [
-  { id: 551, title: "Maana Ke Hum Yaar Nahin", artist: "Parineeti Chopra", film: "Meri Pyaari Bindu", year: 2017, duration: "4:25", videoId: "k4R39ofX-CQ", mood: "Romance" },
-  { id: 558, title: "Haareya", artist: "Arijit Singh", film: "Meri Pyaari Bindu", year: 2017, duration: "3:34", videoId: "TyMUY2CDrjc", fallbackVideoIds: ["LB5DhtD59fA", "JpSFL_bHtBA"], mood: "Romance" },
-  { id: 559, title: "Maana Ke Hum Yaar Nahin (Duet)", artist: "Sonu Nigam, Parineeti Chopra", film: "Meri Pyaari Bindu", year: 2017, duration: "5:27", videoId: "D9N7qAyLofE", fallbackVideoIds: ["k4R39ofX-CQ", "1AtpC4MGdrs"], mood: "Romance" },
-  { id: 723, title: "Ye Jawaani Teri", artist: "Nakash Aziz, Jonita Gandhi", film: "Meri Pyaari Bindu", year: 2017, duration: "3:12", videoId: "n3gPKbHeaQg", fallbackVideoIds: ["bAmOOfcdsxE", "4Pw7j5dOPk4"], mood: "Desi Dance" },
-  { id: 628, title: "Iss Tarah", artist: "Clinton Cerejo, Dominique Cerejo", film: "Meri Pyaari Bindu", year: 2017, duration: "3:40", videoId: "x3o4lt-56hI", fallbackVideoIds: ["aGKWjgWaIX4", "s4fYA_wkta8"], mood: "Indie Chill" },
-  { id: 117, title: "Khol De Baahein", artist: "Monali Thakur", film: "Meri Pyaari Bindu", year: 2017, duration: "3:10", videoId: "aGKWjgWaIX4", fallbackVideoIds: ["icNldQfojaw", "Zr_enRRcyuw"], mood: "Wanderlust" }
-];
-
-// ----------------------------------------------------
 // COMPLETE MASTER VAULT (All distinct songs)
 // ----------------------------------------------------
 export const ALL_VAULT_TRACKS: Track[] = [
@@ -377,7 +329,7 @@ export const ALL_VAULT_TRACKS: Track[] = [
   ...POP_GROOVES_TRACKS
 ];
 
-// Mood & Collection Playlist Configurations
+// Mood Playlist Configurations
 export const PLAYLISTS: Playlist[] = [
   {
     id: "all",
@@ -394,46 +346,6 @@ export const PLAYLISTS: Playlist[] = [
     icon: "❤️",
     description: "Jeene Laga Hoon, Rang Jo Lagyo, Tere Naina, Saathiya, Qaafirana, Jaan Nisaar, Aashiqui 2, 2 States, Main Koi Aisa Geet Gaoon & more.",
     tracks: ROMANCE_TRACKS
-  },
-  {
-    id: "marathi",
-    name: "Marathi Classics",
-    tagline: "Kase Sartil Saaye & Evergreen Gems",
-    icon: "🎭",
-    description: "Kase Sartil Saaye, Valhav Re Nakhawa, Man Talyat Malyat, Ved Lagle Premache & Kitida Navyane.",
-    tracks: MARATHI_GEMS_TRACKS
-  },
-  {
-    id: "ramaiya",
-    name: "Ramaiya Vastavaiya",
-    tagline: "Full Sachin-Jigar OST (2013)",
-    icon: "🌾",
-    description: "Jeene Laga Hoon, Rang Jo Lagyo, Bairiyaa, Peecha Chhute, Hip Hop Pammi & Jadu Ki Jhappi.",
-    tracks: RAMAIYA_VASTAVAIYA_TRACKS
-  },
-  {
-    id: "yesboss",
-    name: "Yes Boss",
-    tagline: "Full Jatin-Lalit OST (1997)",
-    icon: "👔",
-    description: "Main Koi Aisa Geet Gaoon, Chaand Taare, Suniye To, Jaata Hai Tu Kahan, Ek Din Aap & Choodi Baji Hai.",
-    tracks: YES_BOSS_TRACKS
-  },
-  {
-    id: "haseetohphasee",
-    name: "Hasee Toh Phasee",
-    tagline: "Full Vishal-Shekhar OST (2014)",
-    icon: "✨",
-    description: "Zehnaseeb, Manchala, Ishq Bulaava, Drama Queen, Punjabi Wedding Song & Shake It Like Shammi.",
-    tracks: HASEE_TOH_PHASEE_TRACKS
-  },
-  {
-    id: "meripyaaribindu",
-    name: "Meri Pyaari Bindu",
-    tagline: "Full Sachin-Jigar OST (2017)",
-    icon: "📻",
-    description: "Maana Ke Hum Yaar Nahin (Solo & Duet), Haareya, Ye Jawaani Teri, Iss Tarah & Khol De Baahein.",
-    tracks: MERI_PYAARI_BINDU_TRACKS
   },
   {
     id: "dance",
@@ -485,7 +397,7 @@ export const PLAYLISTS: Playlist[] = [
   },
   {
     id: "pop",
-    name: "Pop Grooves & Hits",
+    name: "Pop Grooves & Punjabi Hits",
     tagline: "Softly, Saadi Gali Aaja, Chaand Taare & Vibes",
     icon: "⚡",
     description: "Softly, Saadi Gali Aaja, Peecha Chhute, Chaand Taare, Cupid, Die With A Smile, Levitating, Shararat & pop energy.",
