@@ -122,7 +122,7 @@ export const SUFI_SOUL_TRACKS: Track[] = [
   { id: 410, title: "O Rangrez", artist: "Javed Bashir, Shreya Ghoshal", film: "Bhaag Milkha Bhaag", year: 2013, duration: "6:25", videoId: "jmpUP1MaQ9Q", mood: "Sufi & Soul" },
   { id: 411, title: "Mera Yaar", artist: "Javed Bashir", film: "Bhaag Milkha Bhaag", year: 2013, duration: "5:51", videoId: "ycS5PagXvhQ", mood: "Sufi & Soul" },
   { id: 412, title: "Laathey Di Chaadar", artist: "Quratulain Balouch & Farhan Saeed", film: "Coke Studio Season 10", year: 2017, duration: "5:45", videoId: "SCOKysMnH50", mood: "Sufi & Soul" },
-  { id: 413, title: "Laavan", artist: "Armaan Bedil", year: 2016, duration: "3:58", videoId: "JgS1TB6RCpc", mood: "Sufi & Soul" },
+  { id: 413, title: "Laavan", artist: "Jasmine Sandlas ft. Mofusion", year: 2024, duration: "3:18", videoId: "OxXKDGO-MYQ", fallbackVideoIds: ["WuvLbnFG8yg", "LBa_mcAJbsI"], mood: "Sufi & Soul" },
   { id: 414, title: "Ikk Kudi", artist: "Shahid Mallya / Diljit Dosanjh", film: "Udta Punjab", year: 2016, duration: "4:02", videoId: "pAMksXUJjGs", mood: "Sufi & Soul" },
   { id: 415, title: "Piya Ghar Aavenge", artist: "Kailash Kher", year: 2012, duration: "6:03", videoId: "JSLHveDmdjY", mood: "Sufi & Soul" },
   { id: 416, title: "Tum Tak", artist: "Javed Ali, Pooja Vaidyanath", film: "Raanjhanaa", year: 2013, duration: "5:04", videoId: "_vFaCY9XaIQ", mood: "Sufi & Soul" },
