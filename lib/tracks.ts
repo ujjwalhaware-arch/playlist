@@ -51,7 +51,7 @@ export const ROCKSTAR_TRACKS: Track[] = [
   { id: 202, title: "Nadaan Parinde", artist: "A.R. Rahman, Mohit Chauhan", film: "Rockstar", year: 2011, duration: "6:26", videoId: "6MgsHSAcI9k", mood: "Rockstar" },
   { id: 203, title: "Phir Se Udd Chala", artist: "Mohit Chauhan", film: "Rockstar", year: 2011, duration: "4:31", videoId: "-3gQ6HIkRys", mood: "Rockstar" },
   { id: 204, title: "Tum Ho", artist: "Mohit Chauhan, Suzanne D'Mello", film: "Rockstar", year: 2011, duration: "5:18", videoId: "xnfggj-uo94", mood: "Rockstar" },
-  { id: 205, title: "Jo Bhi Main", artist: "Mohit Chauhan", film: "Rockstar", year: 2011, duration: "4:35", videoId: "sK7riqg2mr4", mood: "Rockstar" },
+  { id: 205, title: "Jo Bhi Main", artist: "Mohit Chauhan", film: "Rockstar", year: 2011, duration: "4:35", videoId: "_kOzFMR9Hys", fallbackVideoIds: ["OczylFTHZOw", "d7S_gG48dVM", "yz-he6EgoOc"], mood: "Rockstar" },
   { id: 206, title: "Sadda Haq", artist: "Mohit Chauhan, Orianthi", film: "Rockstar", year: 2011, duration: "6:05", videoId: "p9DQINKZxWE", mood: "Rockstar" },
   { id: 207, title: "Hawaa Hawaa", artist: "Mohit Chauhan", film: "Rockstar", year: 2011, duration: "5:42", videoId: "0W1hGx5CChI", mood: "Rockstar" },
   { id: 208, title: "Aur Ho", artist: "Mohit Chauhan, Alma Ferovic", film: "Rockstar", year: 2011, duration: "5:35", videoId: "Tw8iApinXoU", mood: "Rockstar" },
