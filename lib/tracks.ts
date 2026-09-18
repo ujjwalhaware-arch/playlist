@@ -40,7 +40,7 @@ export const WANDERLUST_TRACKS: Track[] = [
   { id: 115, title: "Zindagi Kuch Toh Bata", artist: "Jubin Nautiyal, Pritam", film: "Bajrangi Bhaijaan", year: 2015, duration: "4:23", videoId: "jwrCYAIdkeM", fallbackVideoIds: ["JkNGajVY5ek", "ITyHqStTDeg"], mood: "Wanderlust" },
   { id: 116, title: "Aa Chal Ke Tujhe", artist: "Kishore Kumar", film: "Door Gagan Ki Chhaon Mein", year: 1964, duration: "4:38", videoId: "Y_8VmzWOsgs", fallbackVideoIds: ["Tf5rQ8t5ngU", "pPPgRID3198"], mood: "Wanderlust" },
   { id: 117, title: "Khol De Baahein", artist: "Monali Thakur", film: "Meri Pyaari Bindu", year: 2017, duration: "3:10", videoId: "aGKWjgWaIX4", fallbackVideoIds: ["icNldQfojaw", "Zr_enRRcyuw"], mood: "Wanderlust" },
-  { id: 118, title: "500 Miles", artist: "Peter, Paul and Mary", year: 1962, duration: "2:49", videoId: "s3N1n-d8-s4", fallbackVideoIds: ["P6i2eZt6hXQ", "HAZJAzCshN4", "v1s2F1Q8Fv4"], mood: "Wanderlust" }
+  { id: 118, title: "500 Miles", artist: "Peter, Paul and Mary", year: 1962, duration: "2:49", videoId: "UJmbn1sQw2A", fallbackVideoIds: ["1ya-SEOWe94", "k9VgdDNLlu8", "5S3hw0GZBbQ", "HAZJAzCshN4"], mood: "Wanderlust" }
 ];
 
 // ----------------------------------------------------

@@ -828,14 +828,16 @@ export default function PlayerShell() {
       }
       lastErrorTimeRef.current = now;
 
-      // Try fallback video ID if provided and not already tried
+      // Try fallback video IDs sequentially if provided
       const track = currentTrackRef.current;
       if (track && track.fallbackVideoIds && track.fallbackVideoIds.length > 0) {
-        const fbId = track.fallbackVideoIds[0];
-        if (videoId !== fbId) {
+        const fallbacks = track.fallbackVideoIds;
+        const currentIndex = fallbacks.indexOf(videoId);
+        const nextFallback = currentIndex === -1 ? fallbacks[0] : fallbacks[currentIndex + 1];
+        if (nextFallback) {
           try {
             if (playerRef.current && playerRef.current.loadVideoById) {
-              playerRef.current.loadVideoById({ videoId: fbId, startSeconds: 0 });
+              playerRef.current.loadVideoById({ videoId: nextFallback, startSeconds: 0 });
               return;
             }
           } catch (e) {}
