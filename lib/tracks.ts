@@ -39,7 +39,8 @@ export const WANDERLUST_TRACKS: Track[] = [
   { id: 114, title: "Tu Hi Hai", artist: "Arijit Singh, Amit Trivedi", film: "Dear Zindagi", year: 2016, duration: "3:19", videoId: "wHD6z0vuWiM", fallbackVideoIds: ["wNCJvvjo_3I", "UzO9VcDz6h4"], mood: "Wanderlust" },
   { id: 115, title: "Zindagi Kuch Toh Bata", artist: "Jubin Nautiyal, Pritam", film: "Bajrangi Bhaijaan", year: 2015, duration: "4:23", videoId: "jwrCYAIdkeM", fallbackVideoIds: ["JkNGajVY5ek", "ITyHqStTDeg"], mood: "Wanderlust" },
   { id: 116, title: "Aa Chal Ke Tujhe", artist: "Kishore Kumar", film: "Door Gagan Ki Chhaon Mein", year: 1964, duration: "4:38", videoId: "Y_8VmzWOsgs", fallbackVideoIds: ["Tf5rQ8t5ngU", "pPPgRID3198"], mood: "Wanderlust" },
-  { id: 117, title: "Khol De Baahein", artist: "Monali Thakur", film: "Meri Pyaari Bindu", year: 2017, duration: "3:10", videoId: "aGKWjgWaIX4", fallbackVideoIds: ["icNldQfojaw", "Zr_enRRcyuw"], mood: "Wanderlust" }
+  { id: 117, title: "Khol De Baahein", artist: "Monali Thakur", film: "Meri Pyaari Bindu", year: 2017, duration: "3:10", videoId: "aGKWjgWaIX4", fallbackVideoIds: ["icNldQfojaw", "Zr_enRRcyuw"], mood: "Wanderlust" },
+  { id: 118, title: "500 Miles", artist: "Peter, Paul and Mary", year: 1962, duration: "2:49", videoId: "s3N1n-d8-s4", fallbackVideoIds: ["P6i2eZt6hXQ", "HAZJAzCshN4", "v1s2F1Q8Fv4"], mood: "Wanderlust" }
 ];
 
 // ----------------------------------------------------
@@ -101,7 +102,8 @@ export const METRO_NOSTALGIA_TRACKS: Track[] = [
   { id: 330, title: "Ruk Jana Nahin / O Janewali", artist: "Kishore Kumar", film: "Imtihan", year: 1974, duration: "6:03", videoId: "kuaY_qKBUAM", fallbackVideoIds: ["9XhkhCMHU7I", "TYOhxVUCe-A"], mood: "Metro & Late Night" },
   { id: 331, title: "Main Pal Do Pal Ka Shair Hoon", artist: "Mukesh", film: "Kabhi Kabhie", year: 1976, duration: "3:28", videoId: "QkGqpVYjLUw", fallbackVideoIds: ["kxT-5glSScc", "RIIy7SsonwM"], mood: "Metro & Late Night" },
   { id: 332, title: "Tum Ko Dekha Toh Yeh Khayal", artist: "Jagjit Singh, Chitra Singh", film: "Saath Saath", year: 1982, duration: "4:50", videoId: "WtPbNKk9XpU", fallbackVideoIds: ["PnH56Koh_TY", "Jc9PBgHwdII"], mood: "Metro & Late Night" },
-  { id: 333, title: "Chhookar Mere Man Ko", artist: "Kishore Kumar", film: "Yaarana", year: 1981, duration: "4:14", videoId: "BOLYNw3x1lE", fallbackVideoIds: ["4w9FBmbCfws", "smBX9WxLJho"], mood: "Metro & Late Night" }
+  { id: 333, title: "Chhookar Mere Man Ko", artist: "Kishore Kumar", film: "Yaarana", year: 1981, duration: "4:14", videoId: "BOLYNw3x1lE", fallbackVideoIds: ["4w9FBmbCfws", "smBX9WxLJho"], mood: "Metro & Late Night" },
+  { id: 334, title: "Piano Man", artist: "Billy Joel", year: 1973, duration: "5:38", videoId: "gxEPV4kolz0", fallbackVideoIds: ["QwVjTlTdIDQ", "vUq205F41jY"], mood: "Metro & Late Night" }
 ];
 
 // ----------------------------------------------------
