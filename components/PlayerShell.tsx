@@ -655,6 +655,18 @@ const TrackDrawer = ({
 };
 
 // ----------------------------------------------------
+// UTILITIES
+// ----------------------------------------------------
+const shuffleArray = <T,>(array: T[]): T[] => {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+};
+
+// ----------------------------------------------------
 // THE MASTER CLIENT ORCHESTRATOR
 // ----------------------------------------------------
 
@@ -673,6 +685,8 @@ export default function PlayerShell() {
 
   const playerRef = useRef<any>(null);
   const playHistoryRef = useRef<number[]>([]);
+  const shuffleDeckRef = useRef<number[]>([]);
+  const activePoolRef = useRef<Track[]>(PLAYLISTS[0].tracks);
 
   // Active playlist and track
   const currentPlaylist = PLAYLISTS[currentPlaylistIndex] || PLAYLISTS[0];
@@ -684,9 +698,20 @@ export default function PlayerShell() {
       const savedShuffle = localStorage.getItem("vault_shuffle");
       const shouldShuffle = savedShuffle === null || savedShuffle === "true";
       setIsShuffle(shouldShuffle);
-      if (shouldShuffle) {
-        const initialRandomIndex = Math.floor(Math.random() * PLAYLISTS[0].tracks.length);
-        setCurrentTrackIndex(initialRandomIndex);
+
+      const initialPool = PLAYLISTS[0].tracks;
+      activePoolRef.current = initialPool;
+
+      if (shouldShuffle && initialPool.length > 1) {
+        const shuffled = shuffleArray(initialPool);
+        const startTrack = shuffled[0];
+        shuffleDeckRef.current = shuffled.slice(1).map((t) => t.id);
+        const initialIdx = initialPool.findIndex((t) => t.id === startTrack.id);
+        setCurrentTrackIndex(initialIdx !== -1 ? initialIdx : 0);
+        playHistoryRef.current = [startTrack.id];
+      } else {
+        shuffleDeckRef.current = [];
+        playHistoryRef.current = [initialPool[0].id];
       }
     } catch (e) {}
   }, []);
@@ -694,7 +719,14 @@ export default function PlayerShell() {
   // Track history for shuffle prev support
   useEffect(() => {
     if (currentTrack) {
-      playHistoryRef.current = [...playHistoryRef.current.slice(-30), currentTrack.id];
+      const history = playHistoryRef.current;
+      const last = history[history.length - 1];
+      if (last !== currentTrack.id) {
+        history.push(currentTrack.id);
+        if (history.length > 60) {
+          history.shift();
+        }
+      }
     }
   }, [currentTrack?.id]);
 
@@ -714,37 +746,88 @@ export default function PlayerShell() {
   isShuffleRef.current = isShuffle;
 
   const handleNext = () => {
-    const len = currentPlaylist.tracks.length;
-    if (len <= 1) return;
+    const pool = activePoolRef.current && activePoolRef.current.length > 0 ? activePoolRef.current : currentPlaylist.tracks;
+    if (pool.length <= 1) return;
+
     if (isShuffleRef.current) {
-      let nextIdx = Math.floor(Math.random() * len);
-      if (nextIdx === currentTrackIndex) {
-        nextIdx = (nextIdx + 1) % len;
+      // If deck is empty, all songs in this playlist/pool have been played! Reshuffle without repeating the last song immediately
+      if (shuffleDeckRef.current.length === 0) {
+        const currentId = currentTrackRef.current?.id;
+        const candidates = pool.filter((t) => t.id !== currentId);
+        shuffleDeckRef.current = shuffleArray(candidates.length > 0 ? candidates : pool).map((t) => t.id);
       }
-      setCurrentTrackIndex(nextIdx);
-    } else {
-      setCurrentTrackIndex((prev) => (prev + 1) % len);
+
+      const nextTrackId = shuffleDeckRef.current.shift();
+      if (nextTrackId !== undefined) {
+        const targetTrack = pool.find((t) => t.id === nextTrackId) || ALL_VAULT_TRACKS.find((t) => t.id === nextTrackId);
+        if (targetTrack) {
+          const indexInCurrent = currentPlaylist.tracks.findIndex((t) => t.id === targetTrack.id);
+          if (indexInCurrent !== -1) {
+            setCurrentTrackIndex(indexInCurrent);
+          } else {
+            const targetPlIndex = PLAYLISTS.findIndex((pl) =>
+              pl.tracks.some((t) => t.id === targetTrack.id)
+            );
+            if (targetPlIndex !== -1) {
+              setCurrentPlaylistIndex(targetPlIndex);
+              const idx = PLAYLISTS[targetPlIndex].tracks.findIndex((t) => t.id === targetTrack.id);
+              setCurrentTrackIndex(idx !== -1 ? idx : 0);
+            }
+          }
+          setElapsed(0);
+          return;
+        }
+      }
     }
+
+    // Sequential fallback
+    const len = currentPlaylist.tracks.length;
+    const currentIndex = currentPlaylist.tracks.findIndex((t) => t.id === currentTrackRef.current?.id);
+    const nextIdx = (currentIndex !== -1 ? currentIndex + 1 : currentTrackIndex + 1) % len;
+    setCurrentTrackIndex(nextIdx);
     setElapsed(0);
   };
 
   const handlePrev = () => {
     const len = currentPlaylist.tracks.length;
     if (len <= 1) return;
+
     if (isShuffleRef.current && playHistoryRef.current.length > 1) {
-      // Pop current
-      playHistoryRef.current.pop();
+      // Current song is top of stack
+      const currentId = playHistoryRef.current.pop();
+      // Put current back in front of shuffle deck so Next returns to it seamlessly
+      if (currentId !== undefined && !shuffleDeckRef.current.includes(currentId)) {
+        shuffleDeckRef.current.unshift(currentId);
+      }
+
+      // Pop the target previous song so useEffect will re-push it properly
       const prevTrackId = playHistoryRef.current.pop();
       if (prevTrackId !== undefined) {
-        const prevIdx = currentPlaylist.tracks.findIndex((t) => t.id === prevTrackId);
-        if (prevIdx !== -1) {
-          setCurrentTrackIndex(prevIdx);
+        const prevTrack = ALL_VAULT_TRACKS.find((t) => t.id === prevTrackId);
+        if (prevTrack) {
+          const indexInCurrent = currentPlaylist.tracks.findIndex((t) => t.id === prevTrack.id);
+          if (indexInCurrent !== -1) {
+            setCurrentTrackIndex(indexInCurrent);
+          } else {
+            const targetPlIndex = PLAYLISTS.findIndex((pl) =>
+              pl.tracks.some((t) => t.id === prevTrack.id)
+            );
+            if (targetPlIndex !== -1) {
+              setCurrentPlaylistIndex(targetPlIndex);
+              const idx = PLAYLISTS[targetPlIndex].tracks.findIndex((t) => t.id === prevTrack.id);
+              setCurrentTrackIndex(idx !== -1 ? idx : 0);
+            }
+          }
           setElapsed(0);
           return;
         }
       }
     }
-    setCurrentTrackIndex((prev) => (prev - 1 + len) % len);
+
+    // Sequential prev
+    const currentIndex = currentPlaylist.tracks.findIndex((t) => t.id === currentTrackRef.current?.id);
+    const prevIdx = (currentIndex !== -1 ? currentIndex - 1 + len : currentTrackIndex - 1 + len) % len;
+    setCurrentTrackIndex(prevIdx);
     setElapsed(0);
   };
 
@@ -799,18 +882,36 @@ export default function PlayerShell() {
       try {
         localStorage.setItem("vault_shuffle", String(nextVal));
       } catch (e) {}
+
+      if (nextVal) {
+        // Build fresh non-repeating shuffle deck of remaining tracks
+        const pool = activePoolRef.current.length > 0 ? activePoolRef.current : currentPlaylist.tracks;
+        const currentId = currentTrackRef.current?.id;
+        const remaining = pool.filter((t) => t.id !== currentId);
+        shuffleDeckRef.current = shuffleArray(remaining).map((t) => t.id);
+      } else {
+        shuffleDeckRef.current = [];
+      }
+
       return nextVal;
     });
   };
 
   const handleShuffleAll = (customTracks?: Track[]) => {
     const pool = customTracks && customTracks.length > 0 ? customTracks : ALL_VAULT_TRACKS;
-    const randomTrack = pool[Math.floor(Math.random() * pool.length)];
+    if (!pool || pool.length === 0) return;
+
     setIsShuffle(true);
     try {
       localStorage.setItem("vault_shuffle", "true");
     } catch (e) {}
-    handleSelectSpecificTrack(randomTrack);
+
+    activePoolRef.current = pool;
+    const shuffled = shuffleArray(pool);
+    const startTrack = shuffled[0];
+    shuffleDeckRef.current = shuffled.slice(1).map((t) => t.id);
+
+    handleSelectSpecificTrack(startTrack, true);
   };
 
   nextTrackRef.current = handleNext;
@@ -1037,10 +1138,17 @@ export default function PlayerShell() {
   const handleSelectPlaylist = (idx: number) => {
     setCurrentPlaylistIndex(idx);
     const targetPl = PLAYLISTS[idx] || PLAYLISTS[0];
+    activePoolRef.current = targetPl.tracks;
+
     if (isShuffleRef.current && targetPl.tracks.length > 1) {
-      const randomIdx = Math.floor(Math.random() * targetPl.tracks.length);
-      setCurrentTrackIndex(randomIdx);
+      const shuffled = shuffleArray(targetPl.tracks);
+      const startTrack = shuffled[0];
+      shuffleDeckRef.current = shuffled.slice(1).map((t) => t.id);
+
+      const startIdx = targetPl.tracks.findIndex((t) => t.id === startTrack.id);
+      setCurrentTrackIndex(startIdx !== -1 ? startIdx : 0);
     } else {
+      shuffleDeckRef.current = [];
       setCurrentTrackIndex(0);
     }
     setElapsed(0);
@@ -1048,7 +1156,12 @@ export default function PlayerShell() {
     setIsPlaying(true);
   };
 
-  const handleSelectSpecificTrack = (track: Track) => {
+  const handleSelectSpecificTrack = (track: Track, isNewQueueStart: boolean = false) => {
+    if (!isNewQueueStart) {
+      // Remove this selected track from the remaining shuffle deck so it doesn't repeat during the cycle
+      shuffleDeckRef.current = shuffleDeckRef.current.filter((id) => id !== track.id);
+    }
+
     const indexInCurrent = currentPlaylist.tracks.findIndex((t) => t.id === track.id);
     if (indexInCurrent !== -1) {
       setCurrentTrackIndex(indexInCurrent);
@@ -1058,6 +1171,11 @@ export default function PlayerShell() {
       );
       if (targetPlIndex !== -1) {
         setCurrentPlaylistIndex(targetPlIndex);
+        if (!isNewQueueStart) {
+          activePoolRef.current = PLAYLISTS[targetPlIndex].tracks;
+          const remaining = PLAYLISTS[targetPlIndex].tracks.filter((t) => t.id !== track.id);
+          shuffleDeckRef.current = shuffleArray(remaining).map((t) => t.id);
+        }
         const idx = PLAYLISTS[targetPlIndex].tracks.findIndex((t) => t.id === track.id);
         setCurrentTrackIndex(idx !== -1 ? idx : 0);
       } else {
