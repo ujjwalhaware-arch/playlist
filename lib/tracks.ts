@@ -207,7 +207,7 @@ export const ROMANCE_TRACKS: Track[] = [
   { id: 562, title: "Ek Din Aap", artist: "Kumar Sanu, Alka Yagnik", film: "Yes Boss", year: 1997, duration: "4:25", videoId: "90Q5bMN6u2w", fallbackVideoIds: ["-yvwawJ9u_M", "HHgVlMrkloQ"], mood: "Romance" },
   { id: 563, title: "Suniye To", artist: "Abhijeet", film: "Yes Boss", year: 1997, duration: "5:10", videoId: "dIk2hz7vm3A", fallbackVideoIds: ["RLFfZJV_gZU", "vZw7c_kblVA"], mood: "Romance" },
   { id: 564, title: "Choodi Baji Hai", artist: "Udit Narayan, Alka Yagnik", film: "Yes Boss", year: 1997, duration: "5:05", videoId: "qL3lApIbHV0", fallbackVideoIds: ["tqXLGtj_Iwo", "toBOKtBMwiY"], mood: "Romance" },
-  { id: 565, title: "Ved Lagle Premache", artist: "Swapnil Bandodkar", film: "Duniyadari", year: 2013, duration: "4:10", videoId: "nXJlF-8ds1E", fallbackVideoIds: ["PdR2og6V3DM", "VKpsJJ9rC3I"], mood: "Romance" },
+  { id: 565, title: "Mala Ved Laagale", artist: "Swapnil Bandodkar, Ketaki Mategaonkar", film: "Timepass", year: 2014, duration: "4:15", videoId: "I1sDYBVc8sQ", fallbackVideoIds: ["nXJlF-8ds1E", "PdR2og6V3DM"], mood: "Romance" },
   { id: 566, title: "Kitida Navyane", artist: "Aarya Ambekar, Mandar Apte", film: "Ti Saddhya Kay Karte", year: 2017, duration: "3:45", videoId: "67-z9COlhVc", fallbackVideoIds: ["xdN2gYjcWuM", "g2hGVqkgJyA"], mood: "Romance" }
 ];
 
@@ -275,7 +275,9 @@ export const DESI_DANCE_TRACKS: Track[] = [
   { id: 720, title: "Drama Queen", artist: "Shreya Ghoshal, Vishal Dadlani", film: "Hasee Toh Phasee", year: 2014, duration: "3:20", videoId: "0Qs-Suk42dY", fallbackVideoIds: ["bMIC6PA9iUE", "6kO3-K3PDU4"], mood: "Desi Dance" },
   { id: 721, title: "Punjabi Wedding Song", artist: "Sunidhi Chauhan, Benny Dayal", film: "Hasee Toh Phasee", year: 2014, duration: "3:53", videoId: "NuTx6Q4151s", fallbackVideoIds: ["1cTarhdZFW4", "YhSqbQh31po"], mood: "Desi Dance" },
   { id: 722, title: "Shake It Like Shammi", artist: "Benny Dayal", film: "Hasee Toh Phasee", year: 2014, duration: "3:25", videoId: "mkPZfrePAxo", fallbackVideoIds: ["h6a5QVNMi24", "JOQTyJBP0T4"], mood: "Desi Dance" },
-  { id: 723, title: "Ye Jawaani Teri", artist: "Nakash Aziz, Jonita Gandhi", film: "Meri Pyaari Bindu", year: 2017, duration: "3:12", videoId: "n3gPKbHeaQg", fallbackVideoIds: ["bAmOOfcdsxE", "4Pw7j5dOPk4"], mood: "Desi Dance" }
+  { id: 723, title: "Ye Jawaani Teri", artist: "Nakash Aziz, Jonita Gandhi", film: "Meri Pyaari Bindu", year: 2017, duration: "3:12", videoId: "n3gPKbHeaQg", fallbackVideoIds: ["bAmOOfcdsxE", "4Pw7j5dOPk4"], mood: "Desi Dance" },
+  { id: 724, title: "Ved Lavla", artist: "Nihar Shembekar, Shark ft. Neel Salekar, Yashashree Rao", film: "Ved Lavla", year: 2026, duration: "3:21", videoId: "VC58SsLEsSg", mood: "Desi Dance" },
+  { id: 725, title: "Ruperi Valut", artist: "Abhijeet Sawant, Vishwaja Jadhav ft. Gautami Patil", film: "Ruperi Valut", year: 2025, duration: "4:43", videoId: "nZaDmhlMBOE", mood: "Desi Dance" }
 ];
 
 // ----------------------------------------------------
@@ -355,7 +357,7 @@ export const PLAYLISTS: Playlist[] = [
     name: "Desi Dance & Bangers",
     tagline: "High Energy & Party Beats",
     icon: "🔥",
-    description: "Aaj Ki Raat, Chikni Chameli, Rowdy Rathore OST, Hip Hop Pammi, Jadu Ki Jhappi, Bumbro, Drama Queen, Punjabi Wedding Song & Malhari.",
+    description: "Ved Lavla, Ruperi Valut, Aaj Ki Raat, Chikni Chameli, Rowdy Rathore OST, Hip Hop Pammi, Jadu Ki Jhappi, Bumbro, Drama Queen, Punjabi Wedding Song & Malhari.",
     tracks: DESI_DANCE_TRACKS
   },
   {

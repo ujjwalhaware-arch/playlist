@@ -667,6 +667,12 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 };
 
 // ----------------------------------------------------
+// Inaudible silent audio loop (1-second 8kHz PCM WAV data URI)
+// This anchors the mobile Chrome/Android background audio service and keeps the audio focus active
+const SILENT_AUDIO_URI =
+  "data:audio/wav;base64,UklGRjIAAABXQVZFZm10IBIAAAABAAEAQB8AAEAfAAABAAgAAABmYWN0BAAAAAAAAABkYXRhAAAAAA==";
+
+// ----------------------------------------------------
 // THE MASTER CLIENT ORCHESTRATOR
 // ----------------------------------------------------
 
@@ -684,6 +690,9 @@ export default function PlayerShell() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const playerRef = useRef<any>(null);
+  const silentAudioRef = useRef<HTMLAudioElement | null>(null);
+  const candidateIndexRef = useRef<number>(0);
+  const currentPlayingVideoIdRef = useRef<string>("");
   const playHistoryRef = useRef<number[]>([]);
   const shuffleDeckRef = useRef<number[]>([]);
   const activePoolRef = useRef<Track[]>(PLAYLISTS[0].tracks);
@@ -691,6 +700,28 @@ export default function PlayerShell() {
   // Active playlist and track
   const currentPlaylist = PLAYLISTS[currentPlaylistIndex] || PLAYLISTS[0];
   const currentTrack = currentPlaylist.tracks[currentTrackIndex] || currentPlaylist.tracks[0];
+
+  currentPlayingVideoIdRef.current = currentPlayingVideoIdRef.current || currentTrack.videoId;
+
+  // Initialize silent background audio element
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const audio = new Audio();
+      audio.src = SILENT_AUDIO_URI;
+      audio.loop = true;
+      audio.volume = 0.001; // Non-zero keeps Android Audio Focus alive without making any audible noise
+      silentAudioRef.current = audio;
+    } catch (e) {}
+
+    return () => {
+      if (silentAudioRef.current) {
+        silentAudioRef.current.pause();
+        silentAudioRef.current.src = "";
+        silentAudioRef.current = null;
+      }
+    };
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -732,8 +763,6 @@ export default function PlayerShell() {
 
   // Handler state refs
   const nextTrackRef = useRef<() => void>(() => {});
-  const lastErrorTimeRef = useRef<number>(0);
-  const consecutiveErrorCountRef = useRef<number>(0);
   const lastPlayAtRef = useRef<number>(0);
 
   const currentTrackRef = useRef<Track>(currentTrack);
@@ -750,7 +779,6 @@ export default function PlayerShell() {
     if (pool.length <= 1) return;
 
     if (isShuffleRef.current) {
-      // If deck is empty, all songs in this playlist/pool have been played! Reshuffle without repeating the last song immediately
       if (shuffleDeckRef.current.length === 0) {
         const currentId = currentTrackRef.current?.id;
         const candidates = pool.filter((t) => t.id !== currentId);
@@ -793,14 +821,11 @@ export default function PlayerShell() {
     if (len <= 1) return;
 
     if (isShuffleRef.current && playHistoryRef.current.length > 1) {
-      // Current song is top of stack
       const currentId = playHistoryRef.current.pop();
-      // Put current back in front of shuffle deck so Next returns to it seamlessly
       if (currentId !== undefined && !shuffleDeckRef.current.includes(currentId)) {
         shuffleDeckRef.current.unshift(currentId);
       }
 
-      // Pop the target previous song so useEffect will re-push it properly
       const prevTrackId = playHistoryRef.current.pop();
       if (prevTrackId !== undefined) {
         const prevTrack = ALL_VAULT_TRACKS.find((t) => t.id === prevTrackId);
@@ -831,31 +856,37 @@ export default function PlayerShell() {
     setElapsed(0);
   };
 
-  const togglePlayRef = useRef<() => void>(() => {});
-
-  const handleTogglePlay = () => {
+  const handleTogglePlay = (forceState?: boolean) => {
     if (!playerRef.current || !playerReady) return;
-    if (isPlayingRef.current) {
-      try {
-        playerRef.current.pauseVideo();
-      } catch (e) {}
-      setIsPlaying(false);
-    } else {
+    const nextPlaying = forceState !== undefined ? forceState : !isPlayingRef.current;
+
+    if (nextPlaying) {
       try {
         if (playerRef.current.unMute) playerRef.current.unMute();
         if (playerRef.current.setVolume) playerRef.current.setVolume(90);
         playerRef.current.playVideo();
       } catch (e) {}
+      if (silentAudioRef.current) {
+        silentAudioRef.current.play().catch(() => {});
+      }
       setIsPlaying(true);
+    } else {
+      try {
+        playerRef.current.pauseVideo();
+      } catch (e) {}
+      if (silentAudioRef.current) {
+        silentAudioRef.current.pause();
+      }
+      setIsPlaying(false);
     }
   };
 
-  togglePlayRef.current = handleTogglePlay;
+  const togglePlayRef = useRef<() => void>(() => {});
+  togglePlayRef.current = () => handleTogglePlay();
 
   // Spacebar Play/Pause Keyboard Shortcut
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Ignore if typing in a search bar, input or textarea
       const target = e.target as HTMLElement | null;
       if (
         target &&
@@ -884,7 +915,6 @@ export default function PlayerShell() {
       } catch (e) {}
 
       if (nextVal) {
-        // Build fresh non-repeating shuffle deck of remaining tracks
         const pool = activePoolRef.current.length > 0 ? activePoolRef.current : currentPlaylist.tracks;
         const currentId = currentTrackRef.current?.id;
         const remaining = pool.filter((t) => t.id !== currentId);
@@ -916,175 +946,177 @@ export default function PlayerShell() {
 
   nextTrackRef.current = handleNext;
 
-    // Safe Error Handler with fallback and loop protection
-    const handlePlayerError = (code: number, videoId: string) => {
-      console.warn(`YouTube Player reported code ${code} for video ${videoId}`);
-      const now = Date.now();
-      
-      // Check if error is happening too fast (runaway loop protection)
-      if (now - lastErrorTimeRef.current < 3000) {
-        consecutiveErrorCountRef.current += 1;
-      } else {
-        consecutiveErrorCountRef.current = 1;
-      }
-      lastErrorTimeRef.current = now;
+  // Load a video ID safely with fallback tracking
+  const loadVideo = (videoId: string, playImmediately: boolean = true) => {
+    currentPlayingVideoIdRef.current = videoId;
+    lastPlayAtRef.current = 0;
+    setElapsed(0);
 
-      // Try fallback video IDs sequentially if provided
-      const track = currentTrackRef.current;
-      if (track && track.fallbackVideoIds && track.fallbackVideoIds.length > 0) {
-        const fallbacks = track.fallbackVideoIds;
-        const currentIndex = fallbacks.indexOf(videoId);
-        const nextFallback = currentIndex === -1 ? fallbacks[0] : fallbacks[currentIndex + 1];
-        if (nextFallback) {
-          try {
-            if (playerRef.current && playerRef.current.loadVideoById) {
-              playerRef.current.loadVideoById({ videoId: nextFallback, startSeconds: 0 });
-              return;
-            }
-          } catch (e) {}
+    if (playerRef.current) {
+      try {
+        if (playImmediately || isPlayingRef.current) {
+          if (playerRef.current.loadVideoById) {
+            playerRef.current.loadVideoById({
+              videoId,
+              startSeconds: 0,
+            });
+          }
+        } else {
+          if (playerRef.current.cueVideoById) {
+            playerRef.current.cueVideoById({
+              videoId,
+              startSeconds: 0,
+            });
+          }
         }
+      } catch (e) {
+        console.warn("Track load exception:", e);
       }
+    }
+  };
 
-      // If more than 3 errors in rapid succession, pause and halt skip loop
-      if (consecutiveErrorCountRef.current >= 3) {
-        console.warn("Multiple playback errors detected. Halting auto-skip.");
-        setIsPlaying(false);
+  // Safe Error Handler with fallback list recovery and zero song interruption
+  const handlePlayerError = (code: number) => {
+    console.warn(`YouTube Player reported code ${code} for video ${currentPlayingVideoIdRef.current}`);
+    const track = currentTrackRef.current;
+    if (!track) return;
+
+    const allCandidates = [track.videoId, ...(track.fallbackVideoIds || [])];
+    const nextCandidateIdx = candidateIndexRef.current + 1;
+
+    if (nextCandidateIdx < allCandidates.length) {
+      candidateIndexRef.current = nextCandidateIdx;
+      const nextVideoId = allCandidates[nextCandidateIdx];
+      console.log(`[Auto-Recovery] Playing fallback ${nextCandidateIdx + 1}/${allCandidates.length} (${nextVideoId}) for "${track.title}"`);
+      loadVideo(nextVideoId, true);
+      return;
+    }
+
+    // If all fallbacks for this specific song fail, advance gracefully to next song in playlist
+    console.warn(`[Auto-Recovery] All candidate videos for "${track.title}" unavailable. Advancing to next track.`);
+    setTimeout(() => {
+      if (isPlayingRef.current) {
+        nextTrackRef.current();
+      }
+    }, 1200);
+  };
+
+  // Effect 1: YouTube script loader and Player initialization
+  useEffect(() => {
+    if (!mounted) return;
+
+    let isSubscribed = true;
+
+    const initPlayer = () => {
+      if (!isSubscribed || !window.YT || !window.YT.Player) return;
+
+      const container = document.getElementById("youtube-iframe-container");
+      if (!container) {
+        setTimeout(() => {
+          if (isSubscribed) initPlayer();
+        }, 150);
         return;
       }
 
-      // Advance to next track safely once after delay
-      setTimeout(() => {
-        if (isPlayingRef.current && consecutiveErrorCountRef.current < 3) {
-          nextTrackRef.current();
-        }
-      }, 1500);
-    };
+      if (playerRef.current) return;
 
-    // Effect 1: YouTube script loader and Player initialization
-    useEffect(() => {
-      if (!mounted) return;
-
-      let isSubscribed = true;
-
-      const initPlayer = () => {
-        if (!isSubscribed || !window.YT || !window.YT.Player) return;
-
-        const container = document.getElementById("youtube-iframe-container");
-        if (!container) {
-          setTimeout(() => {
-            if (isSubscribed) initPlayer();
-          }, 150);
-          return;
-        }
-
-        if (playerRef.current) return;
-
-        try {
-          playerRef.current = new window.YT.Player("youtube-iframe-container", {
-            height: "100%",
-            width: "100%",
-            videoId: currentTrackRef.current.videoId,
-            playerVars: {
-              autoplay: 0,
-              controls: 0,
-              disablekb: 1,
-              fs: 0,
-              rel: 0,
-              playsinline: 1,
-              modestbranding: 1,
-              iv_load_policy: 3,
-              enablejsapi: 1,
-            },
-            events: {
-              onReady: (event: any) => {
-                if (!isSubscribed) return;
-                setPlayerReady(true);
-                try {
-                  if (event.target.unMute) event.target.unMute();
-                  if (event.target.setVolume) event.target.setVolume(90);
-                  const dur = event.target.getDuration();
-                  if (dur) setDuration(dur);
-                  if (isPlayingRef.current) {
-                    event.target.playVideo();
-                  }
-                } catch (e) {}
-              },
-              onStateChange: (event: any) => {
-                if (!isSubscribed) return;
-                const state = event.data;
-                if (state === 1) {
-                  // PLAYING
-                  setIsPlaying(true);
-                  consecutiveErrorCountRef.current = 0;
-                  lastPlayAtRef.current = Date.now();
-                  const dur = event.target.getDuration();
-                  if (dur) setDuration(dur);
-                } else if (state === 2) {
-                  // PAUSED
-                  setIsPlaying(false);
-                } else if (state === 0) {
-                  // ENDED: Only advance if the song actually played and wasn't a transition glitch
-                  if (lastPlayAtRef.current > 0) {
-                    const timeSincePlay = Date.now() - lastPlayAtRef.current;
-                    if (timeSincePlay > 5000) {
-                      lastPlayAtRef.current = 0;
-                      nextTrackRef.current();
-                    }
+      try {
+        const initialVideoId = currentPlayingVideoIdRef.current || currentTrackRef.current.videoId;
+        playerRef.current = new window.YT.Player("youtube-iframe-container", {
+          height: "100%",
+          width: "100%",
+          videoId: initialVideoId,
+          playerVars: {
+            autoplay: 0,
+            controls: 0,
+            disablekb: 1,
+            fs: 0,
+            rel: 0,
+            playsinline: 1,
+            modestbranding: 1,
+            iv_load_policy: 3,
+            enablejsapi: 1,
+          },
+          events: {
+            onReady: (event: any) => {
+              if (!isSubscribed) return;
+              setPlayerReady(true);
+              try {
+                if (event.target.unMute) event.target.unMute();
+                if (event.target.setVolume) event.target.setVolume(90);
+                const dur = event.target.getDuration();
+                if (dur) setDuration(dur);
+                if (isPlayingRef.current) {
+                  event.target.playVideo();
+                  if (silentAudioRef.current) {
+                    silentAudioRef.current.play().catch(() => {});
                   }
                 }
-              },
-              onError: (event: any) => {
-                if (!isSubscribed) return;
-                handlePlayerError(event.data, currentTrackRef.current.videoId);
-              },
+              } catch (e) {}
             },
-          });
-        } catch (err) {
-          console.error("Error creating YT.Player:", err);
-        }
-      };
-
-      loadYTAPI(initPlayer);
-
-      return () => {
-        isSubscribed = false;
-        if (playerRef.current && playerRef.current.destroy) {
-          try {
-            playerRef.current.destroy();
-          } catch (e) {}
-          playerRef.current = null;
-          setPlayerReady(false);
-        }
-      };
-    }, [mounted]);
-
-    // Effect 2: Smooth track video switching
-    useEffect(() => {
-      if (playerReady && playerRef.current && currentTrack) {
-        lastPlayAtRef.current = 0;
-        setElapsed(0);
-
-        try {
-          if (isPlaying) {
-            if (playerRef.current.loadVideoById) {
-              playerRef.current.loadVideoById({
-                videoId: currentTrack.videoId,
-                startSeconds: 0,
-              });
-            }
-          } else {
-            if (playerRef.current.cueVideoById) {
-              playerRef.current.cueVideoById({
-                videoId: currentTrack.videoId,
-                startSeconds: 0,
-              });
-            }
-          }
-        } catch (e) {
-          console.warn("Track load exception:", e);
-        }
+            onStateChange: (event: any) => {
+              if (!isSubscribed) return;
+              const state = event.data;
+              if (state === 1) {
+                // PLAYING
+                setIsPlaying(true);
+                lastPlayAtRef.current = Date.now();
+                const dur = event.target.getDuration();
+                if (dur) setDuration(dur);
+                if (silentAudioRef.current && silentAudioRef.current.paused) {
+                  silentAudioRef.current.play().catch(() => {});
+                }
+              } else if (state === 2) {
+                // PAUSED - only update state if document is not hidden or user explicitly paused
+                if (!document.hidden) {
+                  setIsPlaying(false);
+                  if (silentAudioRef.current) {
+                    silentAudioRef.current.pause();
+                  }
+                }
+              } else if (state === 0) {
+                // ENDED: Only advance if the song actually played and wasn't a transition glitch
+                if (lastPlayAtRef.current > 0) {
+                  const timeSincePlay = Date.now() - lastPlayAtRef.current;
+                  if (timeSincePlay > 5000) {
+                    lastPlayAtRef.current = 0;
+                    nextTrackRef.current();
+                  }
+                }
+              }
+            },
+            onError: (event: any) => {
+              if (!isSubscribed) return;
+              handlePlayerError(event.data);
+            },
+          },
+        });
+      } catch (err) {
+        console.error("Error creating YT.Player:", err);
       }
-    }, [currentTrack?.id, currentTrack?.videoId, playerReady]);
+    };
+
+    loadYTAPI(initPlayer);
+
+    return () => {
+      isSubscribed = false;
+      if (playerRef.current && playerRef.current.destroy) {
+        try {
+          playerRef.current.destroy();
+        } catch (e) {}
+        playerRef.current = null;
+        setPlayerReady(false);
+      }
+    };
+  }, [mounted]);
+
+  // Effect 2: Smooth track video switching with candidate reset
+  useEffect(() => {
+    if (playerReady && playerRef.current && currentTrack) {
+      candidateIndexRef.current = 0;
+      loadVideo(currentTrack.videoId, isPlayingRef.current);
+    }
+  }, [currentTrack?.id, playerReady]);
 
   // Effect 3: Timed progress tracker
   useEffect(() => {
@@ -1101,6 +1133,190 @@ export default function PlayerShell() {
     }
     return () => clearInterval(interval);
   }, [isPlaying, playerReady]);
+
+  // Effect 4: Mobile Background Visibility Handling (Keep audio playing when screen locked or Chrome minimized)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        // Phone screen locked or user switched apps
+        if (isPlayingRef.current) {
+          if (silentAudioRef.current && silentAudioRef.current.paused) {
+            silentAudioRef.current.play().catch(() => {});
+          }
+          // On mobile Chrome, keep YouTube iframe playing in background
+          setTimeout(() => {
+            if (isPlayingRef.current && playerRef.current?.getPlayerState) {
+              try {
+                const state = playerRef.current.getPlayerState();
+                if (state === 2 || state === -1 || state === 5) {
+                  playerRef.current.playVideo();
+                }
+              } catch (e) {}
+            }
+          }, 300);
+        }
+      } else {
+        // User came back to foreground
+        if (isPlayingRef.current && playerRef.current?.getPlayerState) {
+          try {
+            const state = playerRef.current.getPlayerState();
+            if (state !== 1) {
+              playerRef.current.playVideo();
+            }
+          } catch (e) {}
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, []);
+
+  // Effect 5: Screen Wake Lock API (keeps screen awake when watching in app)
+  useEffect(() => {
+    let wakeLock: any = null;
+    const requestWakeLock = async () => {
+      if (typeof window !== "undefined" && "wakeLock" in navigator && isPlaying && !document.hidden) {
+        try {
+          wakeLock = await (navigator as any).wakeLock.request("screen");
+        } catch (e) {}
+      }
+    };
+
+    requestWakeLock();
+
+    return () => {
+      if (wakeLock) {
+        wakeLock.release().catch(() => {});
+        wakeLock = null;
+      }
+    };
+  }, [isPlaying]);
+
+  // Effect 6: Media Session API Integration (Android & iOS Lock screen / Notification shade controls)
+  useEffect(() => {
+    if (typeof window === "undefined" || !("mediaSession" in navigator) || !currentTrack) return;
+
+    const vidId = currentPlayingVideoIdRef.current || currentTrack.videoId;
+
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: currentTrack.title,
+        artist: `${currentTrack.artist}${currentTrack.film ? ` (${currentTrack.film})` : ""}`,
+        album: `My Playlist • ${currentTrack.mood}`,
+        artwork: [
+          { src: `https://i.ytimg.com/vi/${vidId}/hqdefault.jpg`, sizes: "480x360", type: "image/jpeg" },
+          { src: `https://i.ytimg.com/vi/${vidId}/mqdefault.jpg`, sizes: "320x180", type: "image/jpeg" },
+          { src: "/playlist.png", sizes: "512x512", type: "image/png" },
+        ],
+      });
+    } catch (e) {}
+  }, [currentTrack?.id, currentTrack?.title, currentTrack?.artist]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !("mediaSession" in navigator)) return;
+
+    try {
+      navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
+    } catch (e) {}
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (
+      typeof window === "undefined" ||
+      !("mediaSession" in navigator) ||
+      typeof navigator.mediaSession.setPositionState !== "function" ||
+      duration <= 0
+    ) {
+      return;
+    }
+
+    try {
+      navigator.mediaSession.setPositionState({
+        duration: Math.max(0, duration),
+        playbackRate: 1,
+        position: Math.min(Math.max(0, elapsed), duration),
+      });
+    } catch (e) {}
+  }, [elapsed, duration]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !("mediaSession" in navigator)) return;
+
+    const actionHandlers: [MediaSessionAction, MediaSessionActionHandler | null][] = [
+      [
+        "play",
+        () => {
+          handleTogglePlay(true);
+        },
+      ],
+      [
+        "pause",
+        () => {
+          handleTogglePlay(false);
+        },
+      ],
+      [
+        "previoustrack",
+        () => {
+          handlePrev();
+        },
+      ],
+      [
+        "nexttrack",
+        () => {
+          handleNext();
+        },
+      ],
+      [
+        "seekto",
+        (details: any) => {
+          if (details.seekTime !== undefined && details.seekTime !== null && playerRef.current?.seekTo) {
+            setElapsed(details.seekTime);
+            playerRef.current.seekTo(details.seekTime, true);
+          }
+        },
+      ],
+      [
+        "seekbackward",
+        (details: any) => {
+          const skip = details.seekOffset || 10;
+          const target = Math.max(0, elapsed - skip);
+          setElapsed(target);
+          playerRef.current?.seekTo(target, true);
+        },
+      ],
+      [
+        "seekforward",
+        (details: any) => {
+          const skip = details.seekOffset || 10;
+          const target = Math.min(duration, elapsed + skip);
+          setElapsed(target);
+          playerRef.current?.seekTo(target, true);
+        },
+      ],
+      [
+        "stop",
+        () => {
+          handleTogglePlay(false);
+        },
+      ],
+    ];
+
+    for (const [action, handler] of actionHandlers) {
+      try {
+        navigator.mediaSession.setActionHandler(action, handler);
+      } catch (e) {}
+    }
+
+    return () => {
+      for (const [action] of actionHandlers) {
+        try {
+          navigator.mediaSession.setActionHandler(action, null);
+        } catch (e) {}
+      }
+    };
+  }, [elapsed, duration]);
 
   // Seek bar handler
   const handleSeek = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -1154,11 +1370,13 @@ export default function PlayerShell() {
     setElapsed(0);
     setDuration(0);
     setIsPlaying(true);
+    if (silentAudioRef.current) {
+      silentAudioRef.current.play().catch(() => {});
+    }
   };
 
   const handleSelectSpecificTrack = (track: Track, isNewQueueStart: boolean = false) => {
     if (!isNewQueueStart) {
-      // Remove this selected track from the remaining shuffle deck so it doesn't repeat during the cycle
       shuffleDeckRef.current = shuffleDeckRef.current.filter((id) => id !== track.id);
     }
 
@@ -1187,6 +1405,9 @@ export default function PlayerShell() {
     setElapsed(0);
     setDuration(0);
     setIsPlaying(true);
+    if (silentAudioRef.current) {
+      silentAudioRef.current.play().catch(() => {});
+    }
   };
 
   if (!mounted) {
@@ -1286,3 +1507,4 @@ export default function PlayerShell() {
     </>
   );
 }
+
