@@ -208,7 +208,8 @@ export const ROMANCE_TRACKS: Track[] = [
   { id: 563, title: "Suniye To", artist: "Abhijeet", film: "Yes Boss", year: 1997, duration: "5:10", videoId: "dIk2hz7vm3A", fallbackVideoIds: ["RLFfZJV_gZU", "vZw7c_kblVA"], mood: "Romance" },
   { id: 564, title: "Choodi Baji Hai", artist: "Udit Narayan, Alka Yagnik", film: "Yes Boss", year: 1997, duration: "5:05", videoId: "qL3lApIbHV0", fallbackVideoIds: ["tqXLGtj_Iwo", "toBOKtBMwiY"], mood: "Romance" },
   { id: 565, title: "Mala Ved Laagale", artist: "Swapnil Bandodkar, Ketaki Mategaonkar", film: "Timepass", year: 2014, duration: "4:15", videoId: "I1sDYBVc8sQ", fallbackVideoIds: ["nXJlF-8ds1E", "PdR2og6V3DM"], mood: "Romance" },
-  { id: 566, title: "Kitida Navyane", artist: "Aarya Ambekar, Mandar Apte", film: "Ti Saddhya Kay Karte", year: 2017, duration: "3:45", videoId: "67-z9COlhVc", fallbackVideoIds: ["xdN2gYjcWuM", "g2hGVqkgJyA"], mood: "Romance" }
+  { id: 566, title: "Kitida Navyane", artist: "Aarya Ambekar, Mandar Apte", film: "Ti Saddhya Kay Karte", year: 2017, duration: "3:45", videoId: "67-z9COlhVc", fallbackVideoIds: ["xdN2gYjcWuM", "g2hGVqkgJyA"], mood: "Romance" },
+  { id: 567, title: "Hrudayat Vaje Something", artist: "Vidhit Patankar", film: "Ti Saddhya Kay Karte", year: 2017, duration: "3:24", videoId: "fG2-G23V0lM", fallbackVideoIds: ["l_aK8U84X80"], mood: "Romance" }
 ];
 
 // ----------------------------------------------------
