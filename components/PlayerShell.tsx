@@ -31,16 +31,34 @@ const loadYTAPI = (callback: () => void) => {
 
   const prevCallback = window.onYouTubeIframeAPIReady;
   window.onYouTubeIframeAPIReady = () => {
-    if (prevCallback) prevCallback();
+    if (prevCallback) {
+      try { prevCallback(); } catch (e) {}
+    }
     callback();
   };
 
-  if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
+  if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
     const tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
     const firstScriptTag = document.getElementsByTagName("script")[0];
-    firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+    if (firstScriptTag && firstScriptTag.parentNode) {
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    } else {
+      document.head.appendChild(tag);
+    }
   }
+
+  // Polling fallback in case window.YT is ready before or without triggering onYouTubeIframeAPIReady
+  let attempts = 0;
+  const interval = setInterval(() => {
+    attempts++;
+    if (window.YT && window.YT.Player) {
+      clearInterval(interval);
+      callback();
+    } else if (attempts > 50) {
+      clearInterval(interval);
+    }
+  }, 100);
 };
 
 // ----------------------------------------------------
@@ -307,7 +325,13 @@ const MoodSelector = ({
   );
 };
 
-const VinylDisc = ({ isPlaying }: { isPlaying: boolean }) => {
+const VinylDisc = ({
+  isPlaying,
+  playerHostRef,
+}: {
+  isPlaying: boolean;
+  playerHostRef: React.RefObject<HTMLDivElement | null>;
+}) => {
   return (
     <div className="relative shrink-0 w-16 h-16 sm:w-20 sm:h-20 select-none shadow-[0_8px_32px_rgba(0,0,0,0.75)] border border-white/15 rounded-full bg-black/75 overflow-hidden">
       {/* Vinyl record concentric grooves */}
@@ -324,7 +348,7 @@ const VinylDisc = ({ isPlaying }: { isPlaying: boolean }) => {
           animationPlayState: isPlaying ? "running" : "paused",
         }}
       >
-        <div id="youtube-iframe-container" className="w-full h-full scale-[1.35] brightness-90 saturate-[1.15]" />
+        <div ref={playerHostRef} className="w-full h-full scale-[1.35] brightness-90 saturate-[1.15]" />
       </div>
 
       {/* Center spindle */}
@@ -690,6 +714,7 @@ export default function PlayerShell() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const playerRef = useRef<any>(null);
+  const playerHostRef = useRef<HTMLDivElement | null>(null);
   const silentAudioRef = useRef<HTMLAudioElement | null>(null);
   const candidateIndexRef = useRef<number>(0);
   const currentPlayingVideoIdRef = useRef<string>("");
@@ -857,27 +882,30 @@ export default function PlayerShell() {
   };
 
   const handleTogglePlay = (forceState?: boolean) => {
-    if (!playerRef.current || !playerReady) return;
     const nextPlaying = forceState !== undefined ? forceState : !isPlayingRef.current;
+    setIsPlaying(nextPlaying);
+    isPlayingRef.current = nextPlaying;
 
     if (nextPlaying) {
-      try {
-        if (playerRef.current.unMute) playerRef.current.unMute();
-        if (playerRef.current.setVolume) playerRef.current.setVolume(90);
-        playerRef.current.playVideo();
-      } catch (e) {}
       if (silentAudioRef.current) {
         silentAudioRef.current.play().catch(() => {});
       }
-      setIsPlaying(true);
+      if (playerRef.current && playerReady) {
+        try {
+          if (playerRef.current.unMute) playerRef.current.unMute();
+          if (playerRef.current.setVolume) playerRef.current.setVolume(90);
+          playerRef.current.playVideo();
+        } catch (e) {}
+      }
     } else {
-      try {
-        playerRef.current.pauseVideo();
-      } catch (e) {}
       if (silentAudioRef.current) {
         silentAudioRef.current.pause();
       }
-      setIsPlaying(false);
+      if (playerRef.current && playerReady) {
+        try {
+          playerRef.current.pauseVideo();
+        } catch (e) {}
+      }
     }
   };
 
@@ -955,14 +983,21 @@ export default function PlayerShell() {
     if (playerRef.current) {
       try {
         if (playImmediately || isPlayingRef.current) {
-          if (playerRef.current.loadVideoById) {
+          try {
+            playerRef.current.loadVideoById(videoId, 0);
+          } catch (e) {
             playerRef.current.loadVideoById({
               videoId,
               startSeconds: 0,
             });
           }
+          if (playerRef.current.playVideo) {
+            playerRef.current.playVideo();
+          }
         } else {
-          if (playerRef.current.cueVideoById) {
+          try {
+            playerRef.current.cueVideoById(videoId, 0);
+          } catch (e) {
             playerRef.current.cueVideoById({
               videoId,
               startSeconds: 0,
@@ -975,7 +1010,7 @@ export default function PlayerShell() {
     }
   };
 
-  // Safe Error Handler with fallback list recovery and zero song interruption
+  // Safe Error Handler with fallback list recovery and auto progression
   const handlePlayerError = (code: number) => {
     console.warn(`YouTube Player reported code ${code} for video ${currentPlayingVideoIdRef.current}`);
     const track = currentTrackRef.current;
@@ -995,10 +1030,8 @@ export default function PlayerShell() {
     // If all fallbacks for this specific song fail, advance gracefully to next song in playlist
     console.warn(`[Auto-Recovery] All candidate videos for "${track.title}" unavailable. Advancing to next track.`);
     setTimeout(() => {
-      if (isPlayingRef.current) {
-        nextTrackRef.current();
-      }
-    }, 1200);
+      nextTrackRef.current();
+    }, 1000);
   };
 
   // Effect 1: YouTube script loader and Player initialization
@@ -1010,8 +1043,8 @@ export default function PlayerShell() {
     const initPlayer = () => {
       if (!isSubscribed || !window.YT || !window.YT.Player) return;
 
-      const container = document.getElementById("youtube-iframe-container");
-      if (!container) {
+      const host = playerHostRef.current;
+      if (!host) {
         setTimeout(() => {
           if (isSubscribed) initPlayer();
         }, 150);
@@ -1021,8 +1054,10 @@ export default function PlayerShell() {
       if (playerRef.current) return;
 
       try {
+        host.innerHTML = '<div id="youtube-iframe-player" style="width:100%;height:100%"></div>';
         const initialVideoId = currentPlayingVideoIdRef.current || currentTrackRef.current.videoId;
-        playerRef.current = new window.YT.Player("youtube-iframe-container", {
+        
+        playerRef.current = new window.YT.Player("youtube-iframe-player", {
           height: "100%",
           width: "100%",
           videoId: initialVideoId,
@@ -1036,6 +1071,7 @@ export default function PlayerShell() {
             modestbranding: 1,
             iv_load_policy: 3,
             enablejsapi: 1,
+            origin: typeof window !== "undefined" ? window.location.origin : undefined,
           },
           events: {
             onReady: (event: any) => {
@@ -1060,6 +1096,7 @@ export default function PlayerShell() {
               if (state === 1) {
                 // PLAYING
                 setIsPlaying(true);
+                isPlayingRef.current = true;
                 lastPlayAtRef.current = Date.now();
                 const dur = event.target.getDuration();
                 if (dur) setDuration(dur);
@@ -1067,21 +1104,19 @@ export default function PlayerShell() {
                   silentAudioRef.current.play().catch(() => {});
                 }
               } else if (state === 2) {
-                // PAUSED - only update state if document is not hidden or user explicitly paused
+                // PAUSED - only update state if document is not hidden
                 if (!document.hidden) {
                   setIsPlaying(false);
+                  isPlayingRef.current = false;
                   if (silentAudioRef.current) {
                     silentAudioRef.current.pause();
                   }
                 }
               } else if (state === 0) {
-                // ENDED: Only advance if the song actually played and wasn't a transition glitch
+                // ENDED: Advance to next track
                 if (lastPlayAtRef.current > 0) {
-                  const timeSincePlay = Date.now() - lastPlayAtRef.current;
-                  if (timeSincePlay > 5000) {
-                    lastPlayAtRef.current = 0;
-                    nextTrackRef.current();
-                  }
+                  lastPlayAtRef.current = 0;
+                  nextTrackRef.current();
                 }
               }
             },
@@ -1453,7 +1488,7 @@ export default function PlayerShell() {
             
             {/* Top row: Vinyl Disc & Track Info */}
             <div className="flex items-center gap-3.5 sm:gap-4 flex-1 min-w-0">
-              <VinylDisc isPlaying={isPlaying} />
+              <VinylDisc isPlaying={isPlaying} playerHostRef={playerHostRef} />
 
               <div className="flex-1 flex flex-col justify-center min-w-0 pr-1 select-none">
                 <div className="flex items-baseline justify-between gap-2 sm:gap-3 mb-0.5">
