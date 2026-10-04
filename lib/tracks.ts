@@ -244,7 +244,8 @@ export const INDIE_ACOUSTIC_TRACKS: Track[] = [
   { id: 625, title: "Tune Kaha", artist: "Prateek Kuhad", film: "cold/mess", year: 2018, duration: "3:14", videoId: "miXdVbIm5BY", fallbackVideoIds: ["GqagMyq2hGQ", "mHECzzk9Rto"], mood: "Indie Chill" },
   { id: 626, title: "Kase Sartil Saaye", artist: "Saleel Kulkarni, Sandeep Khare", film: "Ayushyawar Bolu Kahi", year: 2003, duration: "5:15", videoId: "NeFiE-OI-kg", fallbackVideoIds: ["tTcYybPzwWc", "BheQDNoe4gw"], mood: "Indie Chill" },
   { id: 627, title: "Man Talyat Malyat", artist: "Saleel Kulkarni, Sandeep Khare", film: "Sang Sang Bhole Nath", year: 2003, duration: "4:45", videoId: "bshSJf1BHlY", fallbackVideoIds: ["yJ4X6nz2vMQ", "Q8knkYb5lZA"], mood: "Indie Chill" },
-  { id: 628, title: "Iss Tarah", artist: "Clinton Cerejo, Dominique Cerejo", film: "Meri Pyaari Bindu", year: 2017, duration: "3:40", videoId: "x3o4lt-56hI", fallbackVideoIds: ["aGKWjgWaIX4", "s4fYA_wkta8"], mood: "Indie Chill" }
+  { id: 628, title: "Iss Tarah", artist: "Clinton Cerejo, Dominique Cerejo", film: "Meri Pyaari Bindu", year: 2017, duration: "3:40", videoId: "x3o4lt-56hI", fallbackVideoIds: ["aGKWjgWaIX4", "s4fYA_wkta8"], mood: "Indie Chill" },
+  { id: 629, title: "Taare", artist: "Farak", year: 2024, duration: "2:34", videoId: "U0EI7XFkkV4", mood: "Indie Chill" }
 ];
 
 // ----------------------------------------------------
@@ -293,7 +294,7 @@ export const POP_GROOVES_TRACKS: Track[] = [
   { id: 806, title: "Levitating", artist: "Dua Lipa", year: 2020, duration: "3:23", videoId: "TUVcZfQe-Kw", mood: "Pop & Vibes" },
   { id: 807, title: "One Kiss", artist: "Calvin Harris, Dua Lipa", year: 2018, duration: "3:34", videoId: "DkeiKbqa02g", mood: "Pop & Vibes" },
   { id: 808, title: "No Lie", artist: "Sean Paul ft. Dua Lipa", year: 2016, duration: "3:41", videoId: "W3Cky5s5E94", mood: "Pop & Vibes" },
-  { id: 809, title: "Cupid (Twin Ver. - English Version)", artist: "FIFTY FIFTY", year: 2023, duration: "2:54", videoId: "Qc7_zRjH808", fallbackVideoIds: ["_vM9kZ5g8eA", "9Ua_X9BndA4", "5WvR8f4rK8g", "L3wKzy8v4NU"], mood: "Pop & Vibes" },
+  { id: 809, title: "Cupid (Twin Ver. - English Version)", artist: "FIFTY FIFTY", year: 2023, duration: "3:03", videoId: "jgCVkQhlScc", fallbackVideoIds: ["Qc7_zRjH808", "_vM9kZ5g8eA", "9Ua_X9BndA4", "5WvR8f4rK8g", "L3wKzy8v4NU"], mood: "Pop & Vibes" },
   { id: 810, title: "Somebody That I Used To Know", artist: "Gotye ft. Kimbra", year: 2011, duration: "4:03", videoId: "8UVNT4wvIGY", mood: "Pop & Vibes" },
   { id: 811, title: "The Winner Takes It All", artist: "ABBA", year: 1980, duration: "4:56", videoId: "92cwKCU8Z5c", mood: "Pop & Vibes" },
   { id: 812, title: "Be My Baby", artist: "The Ronettes", year: 1963, duration: "2:40", videoId: "jSPpbOGnFgk", mood: "Pop & Vibes" },
