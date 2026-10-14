@@ -209,7 +209,8 @@ export const ROMANCE_TRACKS: Track[] = [
   { id: 564, title: "Choodi Baji Hai", artist: "Udit Narayan, Alka Yagnik", film: "Yes Boss", year: 1997, duration: "5:05", videoId: "qL3lApIbHV0", fallbackVideoIds: ["tqXLGtj_Iwo", "toBOKtBMwiY"], mood: "Romance" },
   { id: 565, title: "Mala Ved Laagale", artist: "Swapnil Bandodkar, Ketaki Mategaonkar", film: "Timepass", year: 2014, duration: "4:15", videoId: "I1sDYBVc8sQ", fallbackVideoIds: ["nXJlF-8ds1E", "PdR2og6V3DM"], mood: "Romance" },
   { id: 566, title: "Kitida Navyane (Male Version)", artist: "Mandar Apte", film: "Ti Saddhya Kay Karte", year: 2017, duration: "3:45", videoId: "xdN2gYjcWuM", fallbackVideoIds: ["sU149-5_z5s", "uH05UoX91Z4"], mood: "Romance" },
-  { id: 567, title: "Hrudayat Vaje Something", artist: "Vidhit Patankar", film: "Ti Saddhya Kay Karte", year: 2017, duration: "3:24", videoId: "cwbx4wr093Y", fallbackVideoIds: ["fG2-G23V0lM", "q6b6S7z-QfE", "l_aK8U84X80"], mood: "Romance" }
+  { id: 567, title: "Hrudayat Vaje Something", artist: "Vidhit Patankar", film: "Ti Saddhya Kay Karte", year: 2017, duration: "3:24", videoId: "cwbx4wr093Y", fallbackVideoIds: ["fG2-G23V0lM", "q6b6S7z-QfE", "l_aK8U84X80"], mood: "Romance" },
+  { id: 568, title: "Gori Teri Aankhen", artist: "Lucky Ali, Kavita Krishnamurthy", year: 2001, duration: "4:32", videoId: "yLREGdXtDgQ", fallbackVideoIds: ["1F2bF2k8-Ko"], mood: "Romance" }
 ];
 
 // ----------------------------------------------------
@@ -245,7 +246,8 @@ export const INDIE_ACOUSTIC_TRACKS: Track[] = [
   { id: 626, title: "Kase Sartil Saaye", artist: "Saleel Kulkarni, Sandeep Khare", film: "Ayushyawar Bolu Kahi", year: 2003, duration: "5:15", videoId: "NeFiE-OI-kg", fallbackVideoIds: ["tTcYybPzwWc", "BheQDNoe4gw"], mood: "Indie Chill" },
   { id: 627, title: "Man Talyat Malyat", artist: "Saleel Kulkarni, Sandeep Khare", film: "Sang Sang Bhole Nath", year: 2003, duration: "4:45", videoId: "bshSJf1BHlY", fallbackVideoIds: ["yJ4X6nz2vMQ", "Q8knkYb5lZA"], mood: "Indie Chill" },
   { id: 628, title: "Iss Tarah", artist: "Clinton Cerejo, Dominique Cerejo", film: "Meri Pyaari Bindu", year: 2017, duration: "3:40", videoId: "x3o4lt-56hI", fallbackVideoIds: ["aGKWjgWaIX4", "s4fYA_wkta8"], mood: "Indie Chill" },
-  { id: 629, title: "Taare", artist: "Farak", year: 2024, duration: "2:34", videoId: "U0EI7XFkkV4", mood: "Indie Chill" }
+  { id: 629, title: "Taare", artist: "Farak", year: 2024, duration: "2:34", videoId: "U0EI7XFkkV4", mood: "Indie Chill" },
+  { id: 630, title: "Bavra Mann", artist: "Swanand Kirkire", film: "Hazaaron Khwaishein Aisi", year: 2003, duration: "4:24", videoId: "qzdiFlT9vAs", fallbackVideoIds: ["69XzWw6b4pU"], mood: "Indie Chill" }
 ];
 
 // ----------------------------------------------------

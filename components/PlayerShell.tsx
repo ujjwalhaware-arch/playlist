@@ -1238,7 +1238,7 @@ export default function PlayerShell() {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: currentTrack.title,
         artist: `${currentTrack.artist}${currentTrack.film ? ` (${currentTrack.film})` : ""}`,
-        album: `My Playlist • ${currentTrack.mood}`,
+        album: `Playlist • ${currentTrack.mood}`,
         artwork: [
           { src: `https://i.ytimg.com/vi/${vidId}/hqdefault.jpg`, sizes: "480x360", type: "image/jpeg" },
           { src: `https://i.ytimg.com/vi/${vidId}/mqdefault.jpg`, sizes: "320x180", type: "image/jpeg" },
