@@ -100,29 +100,6 @@ const Clock = () => {
   );
 };
 
-const ListenerCount = () => {
-  const [count, setCount] = useState(2184);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCount((prev) => {
-        const delta = Math.floor(Math.random() * 9) - 4;
-        return Math.max(1500, prev + delta);
-      });
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className="text-[11px] sm:text-xs font-semibold text-white/85 bg-black/55 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 shadow-[0_4px_12px_rgba(0,0,0,0.5)] flex items-center gap-2 select-none">
-      <span className="relative flex h-2 w-2">
-        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-        <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
-      </span>
-      <span>{count.toLocaleString()} in vibe</span>
-    </div>
-  );
-};
 
 const MoodHeaderPill = ({ currentPlaylist }: { currentPlaylist: Playlist }) => {
   return (
@@ -1461,10 +1438,6 @@ export default function PlayerShell() {
         <Clock />
       </div>
 
-      {/* Top Centre: Live listeners */}
-      <div className="fixed top-[max(1rem,env(safe-area-inset-top))] left-1/2 -translate-x-1/2 z-30">
-        <ListenerCount />
-      </div>
 
       {/* Top Right: Active mood pill */}
       <div className="fixed top-[max(1rem,env(safe-area-inset-top))] right-[max(1rem,env(safe-area-inset-right))] z-30">
