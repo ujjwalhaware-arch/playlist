@@ -321,7 +321,8 @@ export const POP_GROOVES_TRACKS: Track[] = [
   { id: 830, title: "Saadi Gali Aaja", artist: "Ayushmann Khurrana, Neeti Mohan", film: "Nautanki Saala!", year: 2013, duration: "4:15", videoId: "cU3IO6Am65o", fallbackVideoIds: ["kut3TKQFO0w", "EWTMszisKyU"], mood: "Pop & Vibes" },
   { id: 831, title: "Chaand Taare", artist: "Abhijeet", film: "Yes Boss", year: 1997, duration: "4:48", videoId: "p2pHdf9_zc8", fallbackVideoIds: ["wO1L7DnPft8", "N3QzaUwml5w"], mood: "Pop & Vibes" },
   { id: 832, title: "Jaata Hai Tu Kahan", artist: "Abhijeet", film: "Yes Boss", year: 1997, duration: "4:38", videoId: "5eBdiIBvcF8", fallbackVideoIds: ["QBXZDYihmx4", "FP1WJ1_BnDc"], mood: "Pop & Vibes" },
-  { id: 833, title: "Wellerman (Sea Shanty)", artist: "Nathan Evans", year: 2021, duration: "2:35", videoId: "qP-7GNoDJ5c", fallbackVideoIds: ["M26V1IWAP-E", "nk8nS8s6a9g", "SLiTW0EC0yo"], mood: "Pop & Vibes" }
+  { id: 833, title: "Wellerman (Sea Shanty)", artist: "Nathan Evans", year: 2021, duration: "2:35", videoId: "qP-7GNoDJ5c", fallbackVideoIds: ["M26V1IWAP-E", "nk8nS8s6a9g", "SLiTW0EC0yo"], mood: "Pop & Vibes" },
+  { id: 834, title: "Double Decker Eyelashes", artist: "Cornershop ft. Bubbley Kaur", year: 2011, duration: "4:14", videoId: "hFLgJB3ifmw", mood: "Pop & Vibes" }
 ];
 
 // ----------------------------------------------------
@@ -409,7 +410,7 @@ export const PLAYLISTS: Playlist[] = [
     name: "Pop Grooves & Punjabi Hits",
     tagline: "Softly, Saadi Gali Aaja, Chaand Taare & Vibes",
     icon: "⚡",
-    description: "Softly, Saadi Gali Aaja, Wellerman, Peecha Chhute, Chaand Taare, Cupid, Die With A Smile, Levitating & pop energy.",
+    description: "Double Decker Eyelashes, Softly, Saadi Gali Aaja, Wellerman, Peecha Chhute, Chaand Taare, Cupid, Die With A Smile, Levitating & pop energy.",
     tracks: POP_GROOVES_TRACKS
   }
 ];
