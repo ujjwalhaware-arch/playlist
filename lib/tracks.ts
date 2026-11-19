@@ -210,7 +210,8 @@ export const ROMANCE_TRACKS: Track[] = [
   { id: 565, title: "Mala Ved Laagale", artist: "Swapnil Bandodkar, Ketaki Mategaonkar", film: "Timepass", year: 2014, duration: "4:15", videoId: "I1sDYBVc8sQ", fallbackVideoIds: ["nXJlF-8ds1E", "PdR2og6V3DM"], mood: "Romance" },
   { id: 566, title: "Kitida Navyane (Male Version)", artist: "Mandar Apte", film: "Ti Saddhya Kay Karte", year: 2017, duration: "3:45", videoId: "xdN2gYjcWuM", fallbackVideoIds: ["sU149-5_z5s", "uH05UoX91Z4"], mood: "Romance" },
   { id: 567, title: "Hrudayat Vaje Something", artist: "Vidhit Patankar", film: "Ti Saddhya Kay Karte", year: 2017, duration: "3:24", videoId: "cwbx4wr093Y", fallbackVideoIds: ["fG2-G23V0lM", "q6b6S7z-QfE", "l_aK8U84X80"], mood: "Romance" },
-  { id: 568, title: "Gori Teri Aankhen", artist: "Lucky Ali, Kavita Krishnamurthy", year: 2001, duration: "4:32", videoId: "yLREGdXtDgQ", fallbackVideoIds: ["1F2bF2k8-Ko"], mood: "Romance" }
+  { id: 568, title: "Gori Teri Aankhen", artist: "Lucky Ali, Kavita Krishnamurthy", year: 2001, duration: "4:32", videoId: "yLREGdXtDgQ", fallbackVideoIds: ["1F2bF2k8-Ko"], mood: "Romance" },
+  { id: 569, title: "Dilruba Dilnasheen", artist: "Rito Riba", film: "Dilfek", year: 2026, duration: "2:53", videoId: "Ddm7VUgw5Vw", mood: "Romance" }
 ];
 
 // ----------------------------------------------------
@@ -354,7 +355,7 @@ export const PLAYLISTS: Playlist[] = [
     name: "Romance & Melodies",
     tagline: "Love Anthems & Heartfelt Classics",
     icon: "❤️",
-    description: "Jeene Laga Hoon, Rang Jo Lagyo, Tere Naina, Saathiya, Qaafirana, Jaan Nisaar, Aashiqui 2, 2 States, Main Koi Aisa Geet Gaoon & more.",
+    description: "Dilruba Dilnasheen, Jeene Laga Hoon, Rang Jo Lagyo, Tere Naina, Saathiya, Qaafirana, Jaan Nisaar, Aashiqui 2, 2 States, Main Koi Aisa Geet Gaoon & more.",
     tracks: ROMANCE_TRACKS
   },
   {
