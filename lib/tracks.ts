@@ -129,7 +129,8 @@ export const SUFI_SOUL_TRACKS: Track[] = [
   { id: 417, title: "Raanjhanaa", artist: "Jaswinder Singh, Shiraz Uppal", film: "Raanjhanaa", year: 2013, duration: "5:30", videoId: "vgm1u2gPxzw", mood: "Sufi & Soul" },
   { id: 418, title: "Ye Tune Kya Kiya", artist: "Javed Bashir", film: "OUATIMD", year: 2013, duration: "5:14", videoId: "4yZ-mn0u8NE", mood: "Sufi & Soul" },
   { id: 419, title: "Do Din Ki Zindagi", artist: "Talat Mahmood / Kabir Bhajan", year: 1954, duration: "3:24", videoId: "kIz-mbakcDI", mood: "Sufi & Soul" },
-  { id: 420, title: "Valhav Re Nakhawa (Mi Dolkar)", artist: "Lata Mangeshkar, Hemant Kumar", film: "Marathi Classic", year: 1958, duration: "3:30", videoId: "fNnnHDBLU6U", fallbackVideoIds: ["lfX9GBrGdak", "vo2YYIfn_wQ"], mood: "Sufi & Soul" }
+  { id: 420, title: "Valhav Re Nakhawa (Mi Dolkar)", artist: "Lata Mangeshkar, Hemant Kumar", film: "Marathi Classic", year: 1958, duration: "3:30", videoId: "fNnnHDBLU6U", fallbackVideoIds: ["lfX9GBrGdak", "vo2YYIfn_wQ"], mood: "Sufi & Soul" },
+  { id: 421, title: "Chamba (Electro Folk)", artist: "Neha Kakkar, Sonu Kakkar, Aditya Dev", year: 2019, duration: "4:06", videoId: "Jcchz8r3UHc", mood: "Sufi & Soul" }
 ];
 
 // ----------------------------------------------------
@@ -395,7 +396,7 @@ export const PLAYLISTS: Playlist[] = [
     name: "Sufi, Folk & Spiritual",
     tagline: "Namo Namo, Valhav Re Nakhawa & Coke Studio",
     icon: "🕉️",
-    description: "Namo Namo, Chaap Tilak, Tu Jhoom, Afreen Afreen, Valhav Re Nakhawa, Bhar Do Jholi, Pasoori, Khalasi & soulful spirituals.",
+    description: "Chamba, Namo Namo, Chaap Tilak, Tu Jhoom, Afreen Afreen, Valhav Re Nakhawa, Bhar Do Jholi, Pasoori, Khalasi & soulful spirituals.",
     tracks: SUFI_SOUL_TRACKS
   },
   {
